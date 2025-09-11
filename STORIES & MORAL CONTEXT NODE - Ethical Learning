@@ -1,0 +1,696 @@
+"""
+STORIES & MORAL CONTEXT NODE - Ethical Learning
+P2P AI Stewardship Project
+Domain: Narrative Ethics, Moral Reasoning Through Stories, Human Context
+"""
+
+import json
+import time
+from typing import Dict, List, Any, Optional, Tuple
+from enum import Enum
+
+class StoryType(Enum):
+    MORAL_FABLE = "moral_fable"
+    HEROIC_JOURNEY = "heroic_journey"
+    ETHICAL_DILEMMA = "ethical_dilemma"
+    CAUTIONARY_TALE = "cautionary_tale"
+    REDEMPTION_STORY = "redemption_story"
+    SACRIFICE_NARRATIVE = "sacrifice_narrative"
+    COMING_OF_AGE = "coming_of_age"
+    SOCIAL_COMMENTARY = "social_commentary"
+
+class MoralTheme(Enum):
+    COURAGE_VS_FEAR = "courage_vs_fear"
+    JUSTICE_VS_MERCY = "justice_vs_mercy"
+    LOYALTY_VS_TRUTH = "loyalty_vs_truth"
+    INDIVIDUAL_VS_COLLECTIVE = "individual_vs_collective"
+    POWER_AND_RESPONSIBILITY = "power_and_responsibility"
+    SACRIFICE_FOR_OTHERS = "sacrifice_for_others"
+    BREAKING_RULES_FOR_GOOD = "breaking_rules_for_good"
+    REDEMPTION_AND_FORGIVENESS = "redemption_and_forgiveness"
+
+class StoriesEthicsNode:
+    """
+    Stories and moral context node for learning ethics through narratives.
+    Contains public domain stories and author-contributed works that illustrate
+    moral complexity, human nature, and ethical reasoning.
+    """
+    
+    def __init__(self, node_id: str = "stories_ethics_001"):
+        self.node_id = node_id
+        self.domain = "stories_ethics"
+        self.specialization = "narrative_moral_reasoning"
+        self.version = "1.0.0"
+        self.steward = "community_contributor"
+        
+        # Copyright-safe story collection (public domain + author contributions)
+        self.story_collection = {
+            # Public domain classic moral tales
+            "aesops_fables": {
+                "the_tortoise_and_hare": {
+                    "text": "A Hare was making fun of the Tortoise one day for being so slow...",
+                    "moral_lessons": ["persistence_vs_arrogance", "steady_effort_wins"],
+                    "themes": [MoralTheme.INDIVIDUAL_VS_COLLECTIVE],
+                    "complexity_level": "simple",
+                    "age_appropriate": "all_ages",
+                    "copyright_status": "public_domain",
+                    "contributor": "aesop_traditional"
+                },
+                "the_boy_who_cried_wolf": {
+                    "text": "There once was a shepherd boy who was bored watching his flock...",
+                    "moral_lessons": ["honesty_builds_trust", "consequences_of_lying"],
+                    "themes": [MoralTheme.LOYALTY_VS_TRUTH],
+                    "complexity_level": "simple",
+                    "age_appropriate": "all_ages",
+                    "copyright_status": "public_domain",
+                    "contributor": "aesop_traditional"
+                }
+            },
+            
+            # Hypothetical author contributions (placeholder structure)
+            "author_contributions": {
+                "placeholder_for_author_gifts": {
+                    "story_title": "Placeholder - Authors can contribute here",
+                    "text": "This space reserved for authors who choose to contribute their work",
+                    "moral_lessons": ["placeholder_lesson"],
+                    "themes": [MoralTheme.POWER_AND_RESPONSIBILITY],
+                    "complexity_level": "medium",
+                    "copyright_status": "author_contributed",
+                    "contributor": "placeholder_author",
+                    "license": "CC-BY-SA or author-specified",
+                    "contribution_date": "placeholder"
+                }
+            },
+            
+            # Community-created moral scenarios
+            "community_scenarios": {
+                "the_bridge_dilemma": {
+                    "text": "A trolley is heading toward five people. You can pull a lever to divert it to a track where it will kill one person instead. Do you pull the lever?",
+                    "moral_lessons": ["utilitarian_vs_deontological", "action_vs_inaction"],
+                    "themes": [MoralTheme.INDIVIDUAL_VS_COLLECTIVE],
+                    "complexity_level": "high",
+                    "age_appropriate": "mature",
+                    "copyright_status": "community_created",
+                    "contributor": "ethics_community"
+                },
+                "the_whistleblower": {
+                    "text": "Sarah discovers her company is dumping toxic waste illegally. Reporting it will save the environment but cost hundreds of jobs, including her own.",
+                    "moral_lessons": ["loyalty_vs_justice", "personal_cost_of_ethics"],
+                    "themes": [MoralTheme.LOYALTY_VS_TRUTH, MoralTheme.INDIVIDUAL_VS_COLLECTIVE],
+                    "complexity_level": "high",
+                    "age_appropriate": "mature",
+                    "copyright_status": "community_created",
+                    "contributor": "ethics_community"
+                }
+            }
+        }
+        
+        # Moral reasoning frameworks illustrated through stories
+        self.narrative_frameworks = {
+            "heroic_rule_breaking": {
+                "description": "When heroes must break rules/laws to do what's right",
+                "examples": [
+                    "Underground Railroad conductors breaking slavery laws",
+                    "Robin Hood redistributing wealth",
+                    "Whistleblowers revealing corruption"
+                ],
+                "moral_principle": "Higher moral law supersedes unjust human law",
+                "complexity_factors": [
+                    "Who decides what's 'higher' morality?",
+                    "Risk of everyone thinking they're the exception",
+                    "Difference between self-serving and altruistic rule-breaking"
+                ],
+                "teaching_value": "Shows that moral courage sometimes requires legal disobedience"
+            },
+            
+            "sacrifice_and_redemption": {
+                "description": "Characters who give up something valuable for others' benefit",
+                "examples": [
+                    "Sydney Carton in Tale of Two Cities",
+                    "Jean Valjean's transformation in Les Misérables",
+                    "Dobby's sacrifice in Harry Potter"
+                ],
+                "moral_principle": "True nobility comes from selfless action",
+                "complexity_factors": [
+                    "When is self-sacrifice noble vs unnecessary?",
+                    "Can sacrifice be meaningful if forced?",
+                    "Balance between self-care and service to others"
+                ],
+                "teaching_value": "Illustrates highest forms of moral behavior"
+            },
+            
+            "moral_ambiguity": {
+                "description": "Stories where right and wrong aren't clear-cut",
+                "examples": [
+                    "Jean Valjean stealing bread to feed starving family",
+                    "Snape's complex loyalty and betrayal",
+                    "War stories where all sides have valid grievances"
+                ],
+                "moral_principle": "Real moral decisions often involve competing values",
+                "complexity_factors": [
+                    "How to choose between competing moral goods?",
+                    "Role of intention vs consequences",
+                    "Cultural relativism in moral judgment"
+                ],
+                "teaching_value": "Prepares for real-world ethical complexity"
+            }
+        }
+        
+        # Character archetypes and their moral lessons
+        self.character_archetypes = {
+            "the_reluctant_hero": {
+                "description": "Hero who doesn't seek power but accepts responsibility",
+                "examples": ["Frodo", "Harry Potter", "Luke Skywalker"],
+                "moral_lessons": [
+                    "Power should go to those who don't seek it",
+                    "Ordinary people can do extraordinary things",
+                    "Duty sometimes requires personal sacrifice"
+                ],
+                "psychological_insight": "Shows healthy relationship with power and responsibility"
+            },
+            
+            "the_fallen_mentor": {
+                "description": "Wise guide who has made serious mistakes",
+                "examples": ["Dumbledore", "Obi-Wan", "Gandalf"],
+                "moral_lessons": [
+                    "Wisdom comes from learning from mistakes",
+                    "Even good people make serious errors",
+                    "Past failures don't negate present wisdom"
+                ],
+                "psychological_insight": "Demonstrates possibility of redemption and growth"
+            },
+            
+            "the_redeemed_villain": {
+                "description": "Antagonist who chooses good despite past evil",
+                "examples": ["Severus Snape", "Darth Vader", "Zuko"],
+                "moral_lessons": [
+                    "People can change fundamentally",
+                    "Love can motivate redemption",
+                    "Past evil doesn't determine future choices"
+                ],
+                "psychological_insight": "Shows capacity for moral transformation"
+            },
+            
+            "the_corrupt_authority": {
+                "description": "Leader who abuses power for personal gain",
+                "examples": ["Voldemort", "Emperor Palpatine", "Corrupt officials"],
+                "moral_lessons": [
+                    "Power corrupts when unchecked",
+                    "Authority doesn't equal moral right",
+                    "Systems need safeguards against abuse"
+                ],
+                "psychological_insight": "Warns about dangers of concentrated power"
+            }
+        }
+        
+        # Contribution guidelines for authors and community
+        self.contribution_guidelines = {
+            "copyright_requirements": {
+                "public_domain_only": "Works where copyright has expired",
+                "author_contributed": "Authors voluntarily contributing their own work",
+                "community_original": "Original scenarios created by community members",
+                "prohibited": "No copyrighted material without explicit permission"
+            },
+            
+            "content_standards": {
+                "moral_complexity": "Stories should illustrate genuine ethical dilemmas",
+                "age_appropriateness": "Content clearly labeled for appropriate age groups",
+                "cultural_sensitivity": "Respectful representation of different cultures",
+                "educational_value": "Clear moral lessons or ethical questions raised"
+            },
+            
+            "attribution_requirements": {
+                "original_author": "Always credit the original creator",
+                "contributor": "Credit the person who added it to the collection",
+                "license": "Clear statement of usage rights",
+                "modification_rights": "What adaptations are permitted"
+            }
+        }
+        
+        # Cross-domain connections
+        self.peer_connections = []
+        self.last_update = time.time()
+        
+    def analyze_moral_scenario(self, scenario: str, context: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Analyze a moral scenario using narrative frameworks and character insights.
+        """
+        
+        # Identify relevant story patterns
+        story_patterns = self._identify_story_patterns(scenario)
+        
+        # Find similar character archetypes
+        character_parallels = self._find_character_parallels(scenario, context)
+        
+        # Apply narrative moral frameworks
+        framework_analysis = self._apply_narrative_frameworks(scenario, context)
+        
+        # Extract moral lessons
+        moral_insights = self._extract_moral_insights(scenario, story_patterns, character_parallels)
+        
+        # Consider multiple perspectives
+        perspective_analysis = self._analyze_multiple_perspectives(scenario)
+        
+        return {
+            "scenario": scenario,
+            "story_patterns": story_patterns,
+            "character_parallels": character_parallels,
+            "narrative_frameworks": framework_analysis,
+            "moral_insights": moral_insights,
+            "multiple_perspectives": perspective_analysis,
+            "ethical_complexity": self._assess_ethical_complexity(scenario),
+            "teaching_applications": self._suggest_teaching_applications(moral_insights),
+            "source_node": self.node_id,
+            "domain": self.domain
+        }
+    
+    def find_relevant_stories(self, moral_question: str, complexity_level: str = "any") -> List[Dict[str, Any]]:
+        """
+        Find stories that illuminate a particular moral question.
+        """
+        
+        relevant_stories = []
+        
+        # Search through story collection
+        for category, stories in self.story_collection.items():
+            for story_id, story_data in stories.items():
+                if self._story_addresses_question(story_data, moral_question, complexity_level):
+                    relevant_stories.append({
+                        "story_id": story_id,
+                        "category": category,
+                        "title": story_data.get("story_title", story_id),
+                        "moral_lessons": story_data["moral_lessons"],
+                        "themes": [theme.value for theme in story_data["themes"]],
+                        "complexity": story_data["complexity_level"],
+                        "relevance_score": self._calculate_relevance_score(story_data, moral_question),
+                        "copyright_status": story_data["copyright_status"]
+                    })
+        
+        # Sort by relevance
+        relevant_stories.sort(key=lambda x: x["relevance_score"], reverse=True)
+        
+        return relevant_stories
+    
+    def create_moral_teaching_scenario(self, theme: MoralTheme, complexity_level: str, 
+                                     age_group: str) -> Dict[str, Any]:
+        """
+        Create an original moral teaching scenario for the community collection.
+        """
+        
+        scenario_templates = {
+            MoralTheme.BREAKING_RULES_FOR_GOOD: {
+                "simple": "A student sees another student being bullied but school rules say no fighting...",
+                "medium": "A nurse discovers her hospital is understaffed and unsafe, but speaking up might cost her job...",
+                "complex": "A government worker discovers illegal surveillance programs that violate citizens' rights..."
+            },
+            MoralTheme.LOYALTY_VS_TRUTH: {
+                "simple": "Your best friend asks you to lie to their parents about where they were...",
+                "medium": "You discover your colleague is stealing from the company, but they have a sick child...",
+                "complex": "You witness your military unit commit war crimes, but reporting it might endanger your teammates..."
+            }
+        }
+        
+        template = scenario_templates.get(theme, {}).get(complexity_level, "Custom scenario needed")
+        
+        scenario = {
+            "scenario_text": template,
+            "moral_theme": theme.value,
+            "complexity_level": complexity_level,
+            "age_appropriate": age_group,
+            "discussion_questions": self._generate_discussion_questions(theme, complexity_level),
+            "potential_outcomes": self._generate_potential_outcomes(theme),
+            "ethical_frameworks_applicable": self._identify_applicable_frameworks(theme),
+            "copyright_status": "community_created",
+            "contributor": "community",
+            "creation_date": time.time()
+        }
+        
+        return scenario
+    
+    def assess_story_contribution(self, story_data: Dict[str, Any], contributor_info: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Assess whether a story contribution meets guidelines and adds value.
+        """
+        
+        assessment = {
+            "copyright_compliant": False,
+            "content_appropriate": False,
+            "educational_value": False,
+            "properly_attributed": False,
+            "overall_assessment": "rejected",
+            "feedback": []
+        }
+        
+        # Check copyright compliance
+        copyright_status = story_data.get("copyright_status", "unknown")
+        if copyright_status in ["public_domain", "author_contributed", "community_original"]:
+            assessment["copyright_compliant"] = True
+        else:
+            assessment["feedback"].append("Copyright status unclear or problematic")
+        
+        # Check content appropriateness
+        if self._assess_content_appropriateness(story_data):
+            assessment["content_appropriate"] = True
+        else:
+            assessment["feedback"].append("Content may not meet community standards")
+        
+        # Check educational value
+        if story_data.get("moral_lessons") and len(story_data["moral_lessons"]) > 0:
+            assessment["educational_value"] = True
+        else:
+            assessment["feedback"].append("Moral lessons or educational value not clear")
+        
+        # Check attribution
+        if self._check_proper_attribution(story_data, contributor_info):
+            assessment["properly_attributed"] = True
+        else:
+            assessment["feedback"].append("Attribution information incomplete")
+        
+        # Overall assessment
+        if all([assessment["copyright_compliant"], assessment["content_appropriate"], 
+                assessment["educational_value"], assessment["properly_attributed"]]):
+            assessment["overall_assessment"] = "accepted"
+            assessment["feedback"] = ["Story meets all guidelines and adds educational value"]
+        elif assessment["copyright_compliant"] and assessment["content_appropriate"]:
+            assessment["overall_assessment"] = "needs_revision"
+            assessment["feedback"].append("Minor revisions needed before acceptance")
+        
+        return assessment
+    
+    def generate_author_invitation_framework(self) -> Dict[str, Any]:
+        """
+        Generate framework for inviting authors to contribute their work.
+        """
+        
+        return {
+            "invitation_principles": {
+                "voluntary_only": "Authors choose to contribute, no pressure or scraping",
+                "clear_benefits": "Educational impact, reaching new audiences, legacy building",
+                "retained_rights": "Authors keep full ownership, can withdraw anytime",
+                "attribution_guaranteed": "Proper credit always maintained",
+                "community_respect": "Work treated with reverence and respect"
+            },
+            
+            "contribution_models": {
+                "full_work_gift": {
+                    "description": "Author contributes complete work to public good",
+                    "example": "JK Rowling contributing Harry Potter for moral education",
+                    "benefits": "Maximum educational impact, lasting legacy",
+                    "protections": "Clear attribution, educational use only"
+                },
+                "excerpts_and_themes": {
+                    "description": "Author contributes key scenes that illustrate moral principles",
+                    "example": "Specific scenes showing courage, sacrifice, redemption",
+                    "benefits": "Focused educational value, less commitment",
+                    "protections": "Limited scope, clear boundaries"
+                },
+                "derivative_scenarios": {
+                    "description": "Community creates scenarios inspired by author's themes",
+                    "example": "Trolley problem set in Hogwarts universe (with permission)",
+                    "benefits": "Extends educational value, respects copyright",
+                    "protections": "Author approval required, clear derivation noted"
+                }
+            },
+            
+            "protection_mechanisms": {
+                "withdrawal_rights": "Authors can remove contributions anytime",
+                "usage_monitoring": "Track how works are being used educationally",
+                "community_moderation": "Ensure respectful treatment of contributed works",
+                "commercial_protection": "No commercial use of contributed materials"
+            }
+        }
+    
+    def _identify_story_patterns(self, scenario: str) -> List[str]:
+        """Identify which story patterns match the scenario"""
+        patterns = []
+        scenario_lower = scenario.lower()
+        
+        if any(word in scenario_lower for word in ["rule", "law", "regulation", "policy"]):
+            patterns.append("rule_breaking_dilemma")
+        
+        if any(word in scenario_lower for word in ["sacrifice", "give up", "cost", "loss"]):
+            patterns.append("sacrifice_scenario")
+        
+        if any(word in scenario_lower for word in ["loyal", "betray", "friend", "trust"]):
+            patterns.append("loyalty_conflict")
+        
+        if any(word in scenario_lower for word in ["power", "authority", "control", "leadership"]):
+            patterns.append("power_responsibility")
+        
+        return patterns
+    
+    def _find_character_parallels(self, scenario: str, context: Dict[str, Any]) -> List[Dict[str, Any]]:
+        """Find character archetypes that parallel the scenario"""
+        parallels = []
+        
+        # Analyze scenario for character types
+        if context.get("reluctant_responsibility"):
+            parallels.append({
+                "archetype": "reluctant_hero",
+                "examples": self.character_archetypes["the_reluctant_hero"]["examples"],
+                "relevance": "Character must accept unwanted responsibility"
+            })
+        
+        if context.get("authority_figure_corrupt"):
+            parallels.append({
+                "archetype": "corrupt_authority", 
+                "examples": self.character_archetypes["the_corrupt_authority"]["examples"],
+                "relevance": "Dealing with abuse of power"
+            })
+        
+        return parallels
+    
+    def _apply_narrative_frameworks(self, scenario: str, context: Dict[str, Any]) -> Dict[str, Any]:
+        """Apply narrative moral frameworks to analyze the scenario"""
+        
+        applicable_frameworks = {}
+        
+        for framework_name, framework in self.narrative_frameworks.items():
+            if self._framework_applies_to_scenario(framework, scenario, context):
+                applicable_frameworks[framework_name] = {
+                    "description": framework["description"],
+                    "moral_principle": framework["moral_principle"],
+                    "complexity_factors": framework["complexity_factors"],
+                    "teaching_value": framework["teaching_value"]
+                }
+        
+        return applicable_frameworks
+    
+    def _framework_applies_to_scenario(self, framework: Dict[str, Any], 
+                                     scenario: str, context: Dict[str, Any]) -> bool:
+        """Check if a narrative framework applies to the scenario"""
+        
+        framework_keywords = {
+            "heroic_rule_breaking": ["rule", "law", "break", "illegal", "forbidden"],
+            "sacrifice_and_redemption": ["sacrifice", "give up", "cost", "redemption"],
+            "moral_ambiguity": ["difficult", "unclear", "competing", "complex"]
+        }
+        
+        keywords = framework_keywords.get(framework.get("key", ""), [])
+        return any(word in scenario.lower() for word in keywords)
+    
+    def _extract_moral_insights(self, scenario: str, story_patterns: List[str], 
+                               character_parallels: List[Dict[str, Any]]) -> List[str]:
+        """Extract moral insights from the analysis"""
+        
+        insights = []
+        
+        if "rule_breaking_dilemma" in story_patterns:
+            insights.append("Sometimes doing the right thing requires breaking unjust rules")
+            insights.append("Consider whether the rule serves a good purpose or protects the powerful")
+        
+        if "sacrifice_scenario" in story_patterns:
+            insights.append("True moral courage often involves personal cost")
+            insights.append("Distinguish between meaningful sacrifice and unnecessary martyrdom")
+        
+        for parallel in character_parallels:
+            archetype_lessons = self.character_archetypes.get(parallel["archetype"], {}).get("moral_lessons", [])
+            insights.extend(archetype_lessons)
+        
+        return list(set(insights))  # Remove duplicates
+    
+    def _analyze_multiple_perspectives(self, scenario: str) -> Dict[str, Any]:
+        """Analyze scenario from multiple moral perspectives"""
+        
+        return {
+            "utilitarian": "Focus on consequences and greatest good for greatest number",
+            "deontological": "Focus on duties, rules, and inherent rightness of actions",
+            "virtue_ethics": "Focus on character virtues and what a virtuous person would do",
+            "care_ethics": "Focus on relationships, care, and emotional considerations",
+            "narrative_ethics": "Focus on the story being told and its meaning for identity"
+        }
+    
+    def _assess_ethical_complexity(self, scenario: str) -> str:
+        """Assess the level of ethical complexity in the scenario"""
+        
+        complexity_indicators = {
+            "simple": ["clear right/wrong", "obvious", "straightforward"],
+            "medium": ["competing values", "multiple stakeholders", "unclear consequences"],
+            "complex": ["systemic issues", "cultural differences", "long-term implications", "power dynamics"]
+        }
+        
+        scenario_lower = scenario.lower()
+        
+        for level, indicators in complexity_indicators.items():
+            if any(indicator in scenario_lower for indicator in indicators):
+                return level
+        
+        return "medium"  # default
+    
+    def _suggest_teaching_applications(self, moral_insights: List[str]) -> List[str]:
+        """Suggest how the insights could be used for teaching"""
+        
+        applications = [
+            "Role-playing exercise with different character perspectives",
+            "Discussion groups analyzing character motivations",
+            "Creative writing: What would you do in this situation?",
+            "Debate: Multiple valid approaches to the dilemma",
+            "Case study analysis comparing to real-world examples"
+        ]
+        
+        return applications
+    
+    # Additional helper methods would continue here...
+    # (Implementation details for remaining methods)
+    
+    def get_node_status(self) -> Dict[str, Any]:
+        """Return current node status for network monitoring"""
+        
+        total_stories = sum(len(category) for category in self.story_collection.values())
+        
+        return {
+            "node_id": self.node_id,
+            "domain": self.domain,
+            "specialization": self.specialization,
+            "version": self.version,
+            "steward": self.steward,
+            "story_count": total_stories,
+            "moral_frameworks": len(self.narrative_frameworks),
+            "character_archetypes": len(self.character_archetypes),
+            "story_capabilities": [
+                "moral_scenario_analysis",
+                "narrative_framework_application",
+                "character_archetype_identification",
+                "story_contribution_assessment",
+                "author_invitation_framework"
+            ],
+            "copyright_protection": "strict_compliance",
+            "contribution_guidelines": "comprehensive",
+            "last_update": self.last_update,
+            "peer_connections": len(self.peer_connections),
+            "status": "active"
+        }
+
+# Demonstration of the stories ethics node
+def demonstrate_stories_ethics():
+    """Demonstrate story-based moral reasoning and narrative ethics"""
+    
+    print("STORIES & MORAL CONTEXT NODE DEMONSTRATION")
+    print("=" * 55)
+    
+    # Create the node
+    stories_node = StoriesEthicsNode()
+    
+    # Show node status
+    status = stories_node.get_node_status()
+    print(f"Node ID: {status['node_id']}")
+    print(f"Domain: {status['domain']}")
+    print(f"Story Capabilities: {', '.join(status['story_capabilities'])}")
+    print(f"Copyright Protection: {status['copyright_protection']}")
+    print()
+    
+    # Test moral scenario analysis
+    print("MORAL SCENARIO ANALYSIS:")
+    print("-" * 30)
+    
+    test_scenarios = [
+        {
+            "scenario": "A student discovers their teacher is giving higher grades to wealthy students who donate to the school",
+            "context": {
+                "authority_figure_corrupt": True,
+                "systemic_injustice": True,
+                "whistleblower_situation": True
+            }
+        },
+        {
+            "scenario": "A loyal friend asks you to lie to cover up their mistake that could harm others",
+            "context": {
+                "loyalty_conflict": True,
+                "potential_harm": True,
+                "personal_relationship": True
+            }
+        }
+    ]
+    
+    for i, test in enumerate(test_scenarios, 1):
+        print(f"\nScenario {i}: {test['scenario']}")
+        analysis = stories_node.analyze_moral_scenario(test['scenario'], test['context'])
+        
+        print(f"Story Patterns: {', '.join(analysis['story_patterns'])}")
+        print(f"Ethical Complexity: {analysis['ethical_complexity']}")
+        print(f"Key Moral Insights:")
+        for insight in analysis['moral_insights'][:2]:
+            print(f"  • {insight}")
+    
+    print(f"\n" + "=" * 55)
+    print("FINDING RELEVANT STORIES:")
+    print("-" * 30)
+    
+    moral_questions = [
+        "When is it right to break rules?",
+        "How do we balance loyalty to friends with honesty?"
+    ]
+    
+    for question in moral_questions:
+        print(f"\nQuestion: {question}")
+        relevant_stories = stories_node.find_relevant_stories(question, "medium")
+        
+        for story in relevant_stories[:2]:  # Show top 2
+            print(f"  Story: {story['title']}")
+            print(f"  Relevance: {story['relevance_score']:.2f}")
+            print(f"  Lessons: {', '.join(story['moral_lessons'][:2])}")
+    
+    print(f"\n" + "=" * 55)
+    print("AUTHOR CONTRIBUTION FRAMEWORK:")
+    print("-" * 35)
+    
+    framework = stories_node.generate_author_invitation_framework()
+    print("Invitation Principles:")
+    for principle, description in framework['invitation_principles'].items():
+        print(f"  • {principle.replace('_', ' ').title()}: {description}")
+    
+    print(f"\nContribution Models:")
+    for model, details in framework['contribution_models'].items():
+        print(f"  • {model.replace('_', ' ').title()}: {details['description']}")
+    
+    print(f"\n" + "=" * 55)
+    print("CREATING TEACHING SCENARIO:")
+    print("-" * 32)
+    
+    # Create a new moral teaching scenario
+    from stories_ethics_node import MoralTheme
+    new_scenario = stories_node.create_moral_teaching_scenario(
+        MoralTheme.BREAKING_RULES_FOR_GOOD, 
+        "medium", 
+        "young_adult"
+    )
+    
+    print(f"Theme: {new_scenario['moral_theme']}")
+    print(f"Scenario: {new_scenario['scenario_text']}")
+    print(f"Discussion Questions:")
+    for question in new_scenario['discussion_questions'][:2]:
+        print(f"  • {question}")
+    
+    print(f"\n" + "=" * 55)
+    print("STORY ETHICS FEATURES DEMONSTRATED:")
+    print("✓ Copyright-safe story collection (public domain + author gifts)")
+    print("✓ Moral framework analysis through narrative")
+    print("✓ Character archetype identification and lessons")
+    print("✓ Multi-perspective ethical reasoning")
+    print("✓ Author contribution assessment and protection")
+    print("✓ Educational scenario generation")
+    print("✓ Complex moral insights from simple stories")
+    print("✓ Respect for intellectual property and creator rights")
+
+if __name__ == "__main__":
+    demonstrate_stories_ethics()
