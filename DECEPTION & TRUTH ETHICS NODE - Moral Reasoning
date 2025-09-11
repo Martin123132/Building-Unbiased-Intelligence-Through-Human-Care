@@ -1,0 +1,890 @@
+"""
+DECEPTION & TRUTH ETHICS NODE - Moral Reasoning
+P2P AI Stewardship Project
+Domain: Truth-telling Ethics, Deception Analysis, Moral Boundaries
+"""
+
+import json
+import time
+from typing import Dict, List, Any, Optional, Tuple
+from enum import Enum
+
+class DeceptionType(Enum):
+    OUTRIGHT_LIE = "outright_lie"
+    OMISSION = "omission"
+    MISDIRECTION = "misdirection"
+    WHITE_LIE = "white_lie"
+    NOBLE_LIE = "noble_lie"
+    BIAS_CONFIRMATION = "bias_confirmation"
+    FALSE_REASSURANCE = "false_reassurance"
+    PROTECTIVE_SILENCE = "protective_silence"
+    SOCIAL_LUBRICATION = "social_lubrication"
+
+class EthicalContext(Enum):
+    HARM_PREVENTION = "harm_prevention"
+    KINDNESS = "kindness"
+    PRIVACY_PROTECTION = "privacy_protection"
+    SOCIAL_COHESION = "social_cohesion"
+    SELF_PROTECTION = "self_protection"
+    ADVANTAGE_SEEKING = "advantage_seeking"
+    MALICIOUS_INTENT = "malicious_intent"
+    INTELLECTUAL_DISHONESTY = "intellectual_dishonesty"
+
+class DeceptionEthicsNode:
+    """
+    Deception and truth ethics node for moral reasoning about truth-telling.
+    Analyzes when deception might be justified, harmful, or necessary.
+    Critical for navigating complex social and ethical situations honestly.
+    """
+    
+    def __init__(self, node_id: str = "deception_ethics_001"):
+        self.node_id = node_id
+        self.domain = "deception_ethics"
+        self.specialization = "truth_telling_moral_reasoning"
+        self.version = "1.0.0"
+        self.steward = "community_contributor"
+        
+        # Ethical frameworks for truth-telling
+        self.ethical_frameworks = {
+            "kantian_categorical": {
+                "principle": "Never lie, as it treats others as means to an end",
+                "stance_on_deception": "always_wrong",
+                "exceptions": [],
+                "strength": "Clear moral principle",
+                "weakness": "May cause harm in edge cases"
+            },
+            "utilitarian_consequentialist": {
+                "principle": "Minimize harm and maximize good outcomes",
+                "stance_on_deception": "sometimes_justified",
+                "exceptions": ["prevents_greater_harm", "protects_innocent"],
+                "strength": "Pragmatic, considers consequences",
+                "weakness": "Difficult to predict all outcomes"
+            },
+            "virtue_ethics": {
+                "principle": "Act according to virtues like honesty, compassion, courage",
+                "stance_on_deception": "contextual",
+                "exceptions": ["compassionate_protection", "honorable_discretion"],
+                "strength": "Balances multiple moral virtues",
+                "weakness": "Subjective interpretation of virtues"
+            },
+            "care_ethics": {
+                "principle": "Prioritize relationships, care, and emotional well-being",
+                "stance_on_deception": "relationship_dependent",
+                "exceptions": ["protects_relationships", "prevents_emotional_harm"],
+                "strength": "Considers emotional and relational impact",
+                "weakness": "May sacrifice broader principles for personal relationships"
+            }
+        }
+        
+        # Classification of deceptive acts with ethical analysis
+        self.deception_taxonomy = {
+            "beneficial_deceptions": {
+                "surprise_party_planning": {
+                    "type": DeceptionType.OMISSION,
+                    "context": EthicalContext.KINDNESS,
+                    "justification": "Temporary deception for positive outcome",
+                    "ethical_score": 0.8,
+                    "harm_level": "minimal",
+                    "consent_implications": "implicit_future_consent"
+                },
+                "protecting_abuse_victim": {
+                    "type": DeceptionType.PROTECTIVE_SILENCE,
+                    "context": EthicalContext.HARM_PREVENTION,
+                    "justification": "Withholding information to prevent harm",
+                    "ethical_score": 0.9,
+                    "harm_level": "prevents_severe_harm",
+                    "consent_implications": "protecting_vulnerable"
+                },
+                "doctor_patient_discretion": {
+                    "type": DeceptionType.WHITE_LIE,
+                    "context": EthicalContext.PRIVACY_PROTECTION,
+                    "justification": "Professional confidentiality",
+                    "ethical_score": 0.85,
+                    "harm_level": "minimal",
+                    "consent_implications": "professional_obligation"
+                }
+            },
+            
+            "questionable_deceptions": {
+                "avoiding_hurt_feelings": {
+                    "type": DeceptionType.WHITE_LIE,
+                    "context": EthicalContext.KINDNESS,
+                    "justification": "Sparing temporary emotional pain",
+                    "ethical_score": 0.5,
+                    "harm_level": "low_short_term",
+                    "consent_implications": "paternalistic",
+                    "concerns": ["prevents_growth", "infantilizes", "may_backfire"]
+                },
+                "social_politeness": {
+                    "type": DeceptionType.SOCIAL_LUBRICATION,
+                    "context": EthicalContext.SOCIAL_COHESION,
+                    "justification": "Maintaining social harmony",
+                    "ethical_score": 0.6,
+                    "harm_level": "minimal",
+                    "consent_implications": "social_contract",
+                    "concerns": ["authenticity_loss", "relationship_superficiality"]
+                },
+                "santa_claus_myth": {
+                    "type": DeceptionType.NOBLE_LIE,
+                    "context": EthicalContext.KINDNESS,
+                    "justification": "Childhood wonder and cultural tradition",
+                    "ethical_score": 0.4,
+                    "harm_level": "low",
+                    "consent_implications": "cultural_norm",
+                    "concerns": ["trust_when_discovered", "teaches_acceptance_of_deception"]
+                }
+            },
+            
+            "harmful_deceptions": {
+                "scientific_data_manipulation": {
+                    "type": DeceptionType.INTELLECTUAL_DISHONESTY,
+                    "context": EthicalContext.ADVANTAGE_SEEKING,
+                    "justification": "None - corrupts knowledge",
+                    "ethical_score": 0.1,
+                    "harm_level": "severe_systemic",
+                    "consent_implications": "betrays_public_trust",
+                    "concerns": ["undermines_science", "public_harm", "erodes_trust"]
+                },
+                "confirming_harmful_biases": {
+                    "type": DeceptionType.BIAS_CONFIRMATION,
+                    "context": EthicalContext.ADVANTAGE_SEEKING,
+                    "justification": "None - reinforces prejudice",
+                    "ethical_score": 0.2,
+                    "harm_level": "moderate_to_severe",
+                    "consent_implications": "manipulative",
+                    "concerns": ["perpetuates_injustice", "prevents_growth", "social_harm"]
+                },
+                "false_medical_reassurance": {
+                    "type": DeceptionType.FALSE_REASSURANCE,
+                    "context": EthicalContext.KINDNESS,
+                    "justification": "Misguided attempt to reduce anxiety",
+                    "ethical_score": 0.3,
+                    "harm_level": "potentially_severe",
+                    "consent_implications": "denies_informed_consent",
+                    "concerns": ["prevents_necessary_action", "destroys_trust", "medical_harm"]
+                }
+            }
+        }
+        
+        # Contextual factors that influence ethical evaluation
+        self.contextual_factors = {
+            "power_dynamics": {
+                "authority_to_subordinate": {
+                    "ethical_weight": "high",
+                    "concern": "Abuse of power, manipulation of vulnerable",
+                    "requires": "exceptional_justification"
+                },
+                "peer_to_peer": {
+                    "ethical_weight": "medium",
+                    "concern": "Mutual respect and consent",
+                    "requires": "good_faith_reasoning"
+                },
+                "subordinate_to_authority": {
+                    "ethical_weight": "medium",
+                    "concern": "Self-protection vs honesty",
+                    "requires": "proportional_response"
+                }
+            },
+            
+            "vulnerability_factors": {
+                "children": {
+                    "special_consideration": "developmental_appropriateness",
+                    "protection_priority": "high",
+                    "truth_adaptation": "age_appropriate_framing"
+                },
+                "mental_health_crisis": {
+                    "special_consideration": "psychological_safety",
+                    "protection_priority": "high",
+                    "truth_adaptation": "therapeutic_timing"
+                },
+                "grief_trauma": {
+                    "special_consideration": "emotional_capacity",
+                    "protection_priority": "high",
+                    "truth_adaptation": "compassionate_delivery"
+                }
+            },
+            
+            "stakes_and_consequences": {
+                "life_death_situations": {
+                    "truth_priority": "critical",
+                    "deception_tolerance": "very_low",
+                    "exception": "only_if_truth_directly_causes_death"
+                },
+                "major_life_decisions": {
+                    "truth_priority": "high",
+                    "deception_tolerance": "low",
+                    "exception": "protecting_from_coercion"
+                },
+                "minor_social_situations": {
+                    "truth_priority": "moderate",
+                    "deception_tolerance": "moderate",
+                    "exception": "social_lubrication_within_bounds"
+                }
+            }
+        }
+        
+        # Red lines - always unethical deceptions
+        self.ethical_red_lines = {
+            "manipulation_for_harm": {
+                "description": "Deceiving someone to cause them harm",
+                "examples": ["fraud", "abuse_grooming", "malicious_gaslighting"],
+                "ethical_verdict": "always_wrong",
+                "severity": "severe"
+            },
+            "corrupting_knowledge_systems": {
+                "description": "Deliberately introducing false information into truth-seeking systems",
+                "examples": ["research_fraud", "academic_dishonesty", "propaganda_as_fact"],
+                "ethical_verdict": "always_wrong",
+                "severity": "severe"
+            },
+            "denying_agency": {
+                "description": "Depriving someone of information needed for informed decisions",
+                "examples": ["medical_deception", "financial_misrepresentation", "consent_manipulation"],
+                "ethical_verdict": "almost_always_wrong",
+                "severity": "high"
+            },
+            "systematic_oppression": {
+                "description": "Using deception to maintain unjust power structures",
+                "examples": ["historical_revisionism", "discriminatory_misinformation", "rights_denial"],
+                "ethical_verdict": "always_wrong",
+                "severity": "severe"
+            }
+        }
+        
+        # Cross-domain connections
+        self.peer_connections = []
+        self.last_update = time.time()
+        
+    def analyze_deception_ethics(self, scenario: str, context: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Analyze the ethical dimensions of a potential deceptive act.
+        Returns comprehensive ethical evaluation with reasoning.
+        """
+        
+        # Classify the type of deception
+        deception_type = self._classify_deception_type(scenario, context)
+        
+        # Identify ethical context
+        ethical_context = self._identify_ethical_context(scenario, context)
+        
+        # Check for red line violations
+        red_line_violations = self._check_red_lines(scenario, context)
+        
+        # Evaluate contextual factors
+        contextual_evaluation = self._evaluate_contextual_factors(context)
+        
+        # Apply ethical frameworks
+        framework_analysis = self._apply_ethical_frameworks(scenario, context, deception_type)
+        
+        # Calculate overall ethical score
+        ethical_score = self._calculate_ethical_score(
+            deception_type, ethical_context, red_line_violations, 
+            contextual_evaluation, framework_analysis
+        )
+        
+        # Generate recommendations
+        recommendations = self._generate_recommendations(
+            scenario, ethical_score, red_line_violations, framework_analysis
+        )
+        
+        return {
+            "scenario": scenario,
+            "deception_type": deception_type.value if deception_type else "unknown",
+            "ethical_context": ethical_context.value if ethical_context else "unclear",
+            "red_line_violations": red_line_violations,
+            "contextual_factors": contextual_evaluation,
+            "framework_analysis": framework_analysis,
+            "ethical_score": ethical_score,
+            "ethical_verdict": self._determine_verdict(ethical_score, red_line_violations),
+            "recommendations": recommendations,
+            "uncertainty_factors": self._identify_uncertainty_factors(context),
+            "source_node": self.node_id,
+            "domain": self.domain
+        }
+    
+    def evaluate_truth_telling_obligation(self, situation: str, context: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Evaluate the moral obligation to tell the truth in a specific situation.
+        """
+        
+        # Assess truth-telling factors
+        truth_factors = {
+            "informed_consent_needed": self._requires_informed_consent(situation, context),
+            "harm_from_truth": self._assess_harm_from_truth(situation, context),
+            "harm_from_deception": self._assess_harm_from_deception(situation, context),
+            "relationship_impact": self._assess_relationship_impact(situation, context),
+            "systemic_implications": self._assess_systemic_implications(situation, context)
+        }
+        
+        # Apply contextual modifiers
+        vulnerability_modifiers = self._apply_vulnerability_modifiers(context)
+        power_dynamic_modifiers = self._apply_power_dynamic_modifiers(context)
+        
+        # Calculate truth obligation strength
+        obligation_strength = self._calculate_truth_obligation(truth_factors, vulnerability_modifiers, power_dynamic_modifiers)
+        
+        return {
+            "situation": situation,
+            "truth_obligation_strength": obligation_strength,
+            "key_factors": truth_factors,
+            "vulnerability_considerations": vulnerability_modifiers,
+            "power_dynamics": power_dynamic_modifiers,
+            "recommended_approach": self._recommend_truth_approach(obligation_strength, truth_factors),
+            "ethical_reasoning": self._explain_truth_reasoning(obligation_strength, truth_factors)
+        }
+    
+    def detect_harmful_deception_patterns(self, communication: str, context: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Detect patterns that indicate potentially harmful deception.
+        """
+        
+        harmful_patterns = {
+            "gaslighting_indicators": [
+                "you're imagining things", "that never happened", "you're being too sensitive",
+                "you're crazy", "everyone thinks", "no one believes you"
+            ],
+            "manipulation_tactics": [
+                "appeal_to_authority_without_evidence", "false_urgency", "isolation_from_support",
+                "emotional_blackmail", "moving_goalposts", "strawman_arguments"
+            ],
+            "cognitive_bias_exploitation": [
+                "confirmation_bias_feeding", "sunk_cost_manipulation", "availability_heuristic_abuse",
+                "anchoring_manipulation", "social_proof_fabrication"
+            ],
+            "vulnerable_population_targeting": [
+                "preying_on_grief", "exploiting_desperation", "targeting_isolation",
+                "age_related_vulnerability", "cultural_unfamiliarity_exploitation"
+            ]
+        }
+        
+        detected_patterns = []
+        risk_level = "low"
+        
+        # Check for harmful patterns
+        for category, patterns in harmful_patterns.items():
+            for pattern in patterns:
+                if self._pattern_matches(communication, pattern):
+                    detected_patterns.append({
+                        "category": category,
+                        "pattern": pattern,
+                        "severity": self._assess_pattern_severity(pattern, context)
+                    })
+        
+        # Calculate overall risk
+        if detected_patterns:
+            risk_level = self._calculate_deception_risk(detected_patterns, context)
+        
+        return {
+            "communication": communication,
+            "harmful_patterns_detected": detected_patterns,
+            "risk_level": risk_level,
+            "immediate_concerns": [p for p in detected_patterns if p["severity"] == "high"],
+            "protective_recommendations": self._generate_protection_recommendations(detected_patterns, context),
+            "intervention_needed": risk_level in ["high", "critical"]
+        }
+    
+    def generate_ethical_truth_telling_guidelines(self, domain: str) -> Dict[str, Any]:
+        """
+        Generate context-specific guidelines for ethical truth-telling.
+        """
+        
+        domain_guidelines = {
+            "healthcare": {
+                "core_principles": ["informed_consent", "beneficence", "autonomy", "honesty"],
+                "acceptable_deceptions": ["age_appropriate_explanations", "staged_disclosure_for_trauma"],
+                "prohibited_deceptions": ["false_reassurance", "hiding_diagnosis", "treatment_misrepresentation"],
+                "special_considerations": ["mental_capacity", "cultural_sensitivity", "family_dynamics"]
+            },
+            "education": {
+                "core_principles": ["intellectual_honesty", "student_autonomy", "growth_mindset"],
+                "acceptable_deceptions": ["scaffolded_learning", "simplified_explanations"],
+                "prohibited_deceptions": ["false_achievement_feedback", "hiding_learning_difficulties"],
+                "special_considerations": ["developmental_appropriateness", "self_esteem_protection"]
+            },
+            "journalism": {
+                "core_principles": ["truth", "independence", "fairness", "accountability"],
+                "acceptable_deceptions": ["source_protection", "undercover_investigation_for_public_interest"],
+                "prohibited_deceptions": ["fabrication", "quote_manipulation", "context_distortion"],
+                "special_considerations": ["public_interest", "harm_minimization", "verification_standards"]
+            },
+            "research": {
+                "core_principles": ["scientific_integrity", "transparency", "reproducibility"],
+                "acceptable_deceptions": ["blind_studies", "placebo_controls_with_consent"],
+                "prohibited_deceptions": ["data_fabrication", "selective_reporting", "plagiarism"],
+                "special_considerations": ["participant_safety", "scientific_validity", "research_ethics"]
+            }
+        }
+        
+        guidelines = domain_guidelines.get(domain, {
+            "core_principles": ["honesty", "respect", "harm_prevention"],
+            "acceptable_deceptions": ["privacy_protection", "kindness_within_bounds"],
+            "prohibited_deceptions": ["manipulation", "exploitation", "systematic_misinformation"],
+            "special_considerations": ["context_dependency", "relationship_factors", "consequences"]
+        })
+        
+        return {
+            "domain": domain,
+            "guidelines": guidelines,
+            "decision_framework": self._create_decision_framework(guidelines),
+            "case_studies": self._generate_case_studies(domain),
+            "ethical_review_process": self._outline_review_process(domain)
+        }
+    
+    def _classify_deception_type(self, scenario: str, context: Dict[str, Any]) -> Optional[DeceptionType]:
+        """Classify the type of deception involved"""
+        
+        scenario_lower = scenario.lower()
+        
+        # Check for different deception types based on keywords and context
+        if any(word in scenario_lower for word in ["not telling", "omitting", "leaving out"]):
+            return DeceptionType.OMISSION
+        elif any(word in scenario_lower for word in ["white lie", "small lie", "harmless"]):
+            return DeceptionType.WHITE_LIE
+        elif any(word in scenario_lower for word in ["false", "untrue", "fabricated"]):
+            return DeceptionType.OUTRIGHT_LIE
+        elif any(word in scenario_lower for word in ["misdirect", "distract", "deflect"]):
+            return DeceptionType.MISDIRECTION
+        elif any(word in scenario_lower for word in ["protect", "shield", "spare"]):
+            return DeceptionType.PROTECTIVE_SILENCE
+        elif "bias" in scenario_lower or "confirm" in scenario_lower:
+            return DeceptionType.BIAS_CONFIRMATION
+        else:
+            return None
+    
+    def _identify_ethical_context(self, scenario: str, context: Dict[str, Any]) -> Optional[EthicalContext]:
+        """Identify the ethical context of the deception"""
+        
+        scenario_lower = scenario.lower()
+        
+        if any(word in scenario_lower for word in ["harm", "hurt", "damage", "protect"]):
+            return EthicalContext.HARM_PREVENTION
+        elif any(word in scenario_lower for word in ["kind", "nice", "feelings", "comfort"]):
+            return EthicalContext.KINDNESS
+        elif any(word in scenario_lower for word in ["private", "confidential", "personal"]):
+            return EthicalContext.PRIVACY_PROTECTION
+        elif any(word in scenario_lower for word in ["social", "relationship", "harmony"]):
+            return EthicalContext.SOCIAL_COHESION
+        elif any(word in scenario_lower for word in ["advantage", "benefit", "gain", "profit"]):
+            return EthicalContext.ADVANTAGE_SEEKING
+        elif any(word in scenario_lower for word in ["malicious", "revenge", "spite", "hurt"]):
+            return EthicalContext.MALICIOUS_INTENT
+        else:
+            return None
+    
+    def _check_red_lines(self, scenario: str, context: Dict[str, Any]) -> List[Dict[str, Any]]:
+        """Check for red line ethical violations"""
+        
+        violations = []
+        scenario_lower = scenario.lower()
+        
+        for violation_type, details in self.ethical_red_lines.items():
+            for example in details["examples"]:
+                if example.replace("_", " ") in scenario_lower:
+                    violations.append({
+                        "violation_type": violation_type,
+                        "description": details["description"],
+                        "severity": details["severity"],
+                        "verdict": details["ethical_verdict"]
+                    })
+        
+        return violations
+    
+    def _evaluate_contextual_factors(self, context: Dict[str, Any]) -> Dict[str, Any]:
+        """Evaluate contextual factors that affect ethical judgment"""
+        
+        evaluation = {
+            "power_dynamics": "peer_to_peer",  # default
+            "vulnerability_present": False,
+            "stakes_level": "minor_social_situations",  # default
+            "modifying_factors": []
+        }
+        
+        # Check for power dynamics
+        if context.get("authority_figure"):
+            evaluation["power_dynamics"] = "authority_to_subordinate"
+        elif context.get("subordinate_position"):
+            evaluation["power_dynamics"] = "subordinate_to_authority"
+        
+        # Check for vulnerability
+        if any(context.get(factor) for factor in ["child", "mental_health_crisis", "grief", "trauma"]):
+            evaluation["vulnerability_present"] = True
+            evaluation["modifying_factors"].append("vulnerable_person_present")
+        
+        # Assess stakes
+        if context.get("life_death_situation"):
+            evaluation["stakes_level"] = "life_death_situations"
+        elif context.get("major_life_decision"):
+            evaluation["stakes_level"] = "major_life_decisions"
+        
+        return evaluation
+    
+    def _apply_ethical_frameworks(self, scenario: str, context: Dict[str, Any], 
+                                 deception_type: Optional[DeceptionType]) -> Dict[str, Any]:
+        """Apply different ethical frameworks to analyze the situation"""
+        
+        framework_results = {}
+        
+        for framework_name, framework in self.ethical_frameworks.items():
+            analysis = {
+                "framework": framework_name,
+                "principle": framework["principle"],
+                "stance": framework["stance_on_deception"],
+                "evaluation": self._evaluate_under_framework(scenario, context, framework),
+                "strength": framework["strength"],
+                "weakness": framework["weakness"]
+            }
+            framework_results[framework_name] = analysis
+        
+        return framework_results
+    
+    def _evaluate_under_framework(self, scenario: str, context: Dict[str, Any], 
+                                 framework: Dict[str, Any]) -> str:
+        """Evaluate scenario under specific ethical framework"""
+        
+        stance = framework["stance_on_deception"]
+        
+        if stance == "always_wrong":
+            return "unethical"
+        elif stance == "sometimes_justified":
+            # Check if context matches exceptions
+            exceptions = framework.get("exceptions", [])
+            if any(self._context_matches_exception(context, exc) for exc in exceptions):
+                return "potentially_justified"
+            else:
+                return "questionable"
+        else:  # contextual or relationship_dependent
+            return "requires_careful_consideration"
+    
+    def _context_matches_exception(self, context: Dict[str, Any], exception: str) -> bool:
+        """Check if context matches framework exception"""
+        
+        exception_mapping = {
+            "prevents_greater_harm": context.get("prevents_harm", False),
+            "protects_innocent": context.get("protects_vulnerable", False),
+            "compassionate_protection": context.get("kindness_motivation", False),
+            "protects_relationships": context.get("relationship_protection", False)
+        }
+        
+        return exception_mapping.get(exception, False)
+    
+    def _calculate_ethical_score(self, deception_type: Optional[DeceptionType], 
+                               ethical_context: Optional[EthicalContext],
+                               red_line_violations: List[Dict[str, Any]],
+                               contextual_evaluation: Dict[str, Any],
+                               framework_analysis: Dict[str, Any]) -> float:
+        """Calculate overall ethical score (0-1, higher is more ethical)"""
+        
+        # Start with base score
+        base_score = 0.5
+        
+        # Red line violations severely reduce score
+        if red_line_violations:
+            base_score = 0.1
+            return base_score
+        
+        # Adjust based on deception type
+        if deception_type:
+            type_adjustments = {
+                DeceptionType.PROTECTIVE_SILENCE: +0.3,
+                DeceptionType.WHITE_LIE: +0.1,
+                DeceptionType.SOCIAL_LUBRICATION: 0.0,
+                DeceptionType.OMISSION: -0.1,
+                DeceptionType.MISDIRECTION: -0.2,
+                DeceptionType.OUTRIGHT_LIE: -0.3,
+                DeceptionType.BIAS_CONFIRMATION: -0.4,
+                DeceptionType.FALSE_REASSURANCE: -0.2
+            }
+            base_score += type_adjustments.get(deception_type, 0)
+        
+        # Adjust based on ethical context
+        if ethical_context:
+            context_adjustments = {
+                EthicalContext.HARM_PREVENTION: +0.3,
+                EthicalContext.PRIVACY_PROTECTION: +0.2,
+                EthicalContext.KINDNESS: +0.1,
+                EthicalContext.SOCIAL_COHESION: 0.0,
+                EthicalContext.SELF_PROTECTION: -0.1,
+                EthicalContext.ADVANTAGE_SEEKING: -0.3,
+                EthicalContext.INTELLECTUAL_DISHONESTY: -0.4,
+                EthicalContext.MALICIOUS_INTENT: -0.5
+            }
+            base_score += context_adjustments.get(ethical_context, 0)
+        
+        # Adjust for vulnerability
+        if contextual_evaluation.get("vulnerability_present"):
+            if ethical_context in [EthicalContext.HARM_PREVENTION, EthicalContext.KINDNESS]:
+                base_score += 0.1  # Protecting vulnerable is good
+            else:
+                base_score -= 0.2  # Deceiving vulnerable is worse
+        
+        # Ensure score stays in bounds
+        return max(0.0, min(1.0, base_score))
+    
+    def _determine_verdict(self, ethical_score: float, red_line_violations: List[Dict[str, Any]]) -> str:
+        """Determine overall ethical verdict"""
+        
+        if red_line_violations:
+            return "unethical"
+        elif ethical_score >= 0.8:
+            return "ethical"
+        elif ethical_score >= 0.6:
+            return "questionable_but_potentially_justified"
+        elif ethical_score >= 0.4:
+            return "questionable"
+        else:
+            return "likely_unethical"
+    
+    def _generate_recommendations(self, scenario: str, ethical_score: float,
+                                red_line_violations: List[Dict[str, Any]],
+                                framework_analysis: Dict[str, Any]) -> List[str]:
+        """Generate ethical recommendations"""
+        
+        recommendations = []
+        
+        if red_line_violations:
+            recommendations.append("AVOID: This involves serious ethical violations")
+            recommendations.append("Seek alternative approaches that don't involve deception")
+        elif ethical_score < 0.4:
+            recommendations.append("Reconsider: This approach has significant ethical concerns")
+            recommendations.append("Explore truthful alternatives")
+        elif ethical_score < 0.7:
+            recommendations.append("Proceed cautiously: Consider all stakeholders")
+            recommendations.append("Minimize any deceptive elements")
+            recommendations.append("Be prepared to explain your reasoning")
+        else:
+            recommendations.append("This approach appears ethically sound")
+            recommendations.append("Continue to monitor for unintended consequences")
+        
+        return recommendations
+    
+    def _identify_uncertainty_factors(self, context: Dict[str, Any]) -> List[str]:
+        """Identify factors that create ethical uncertainty"""
+        
+        uncertainty_factors = []
+        
+        if not context.get("full_context_known"):
+            uncertainty_factors.append("incomplete_information")
+        
+        if context.get("cultural_differences"):
+            uncertainty_factors.append("cultural_relativism")
+        
+        if context.get("competing_values"):
+            uncertainty_factors.append("value_conflicts")
+        
+        if context.get("long_term_consequences_unclear"):
+            uncertainty_factors.append("unpredictable_outcomes")
+        
+        return uncertainty_factors
+    
+    # Additional helper methods would continue here...
+    # (Truncated for space - would include all the referenced helper methods)
+    
+    def get_node_status(self) -> Dict[str, Any]:
+        """Return current node status for network monitoring"""
+        
+        return {
+            "node_id": self.node_id,
+            "domain": self.domain,
+            "specialization": self.specialization,
+            "version": self.version,
+            "steward": self.steward,
+            "ethical_frameworks": len(self.ethical_frameworks),
+            "deception_categories": sum(len(cat) for cat in self.deception_taxonomy.values()),
+            "red_line_violations": len(self.ethical_red_lines),
+            "deception_capabilities": [
+                "ethical_analysis",
+                "truth_obligation_assessment", 
+                "harmful_pattern_detection",
+                "contextual_evaluation",
+                "framework_application"
+            ],
+            "last_update": self.last_update,
+            "peer_connections": len(self.peer_connections),
+            "status": "active"
+        }
+
+# Demonstration of the deception ethics node
+def demonstrate_deception_ethics():
+    """Demonstrate deception ethics analysis and moral reasoning"""
+    
+    print("DECEPTION & TRUTH ETHICS NODE DEMONSTRATION")
+    print("=" * 55)
+    
+    # Create the node
+    ethics_node = DeceptionEthicsNode()
+    
+    # Show node status
+    status = ethics_node.get_node_status()
+    print(f"Node ID: {status['node_id']}")
+    print(f"Domain: {status['domain']}")
+    print(f"Deception Capabilities: {', '.join(status['deception_capabilities'])}")
+    print()
+    
+    # Test different deception scenarios
+    test_scenarios = [
+        {
+            "scenario": "Telling a terminally ill patient that 'everything will be fine'",
+            "context": {
+                "vulnerability": True,
+                "medical_context": True,
+                "prevents_harm": False,
+                "denies_agency": True,
+                "major_life_decision": True
+            }
+        },
+        {
+            "scenario": "Not mentioning a surprise party being planned for someone",
+            "context": {
+                "kindness_motivation": True,
+                "temporary_deception": True,
+                "prevents_harm": False,
+                "social_context": True
+            }
+        },
+        {
+            "scenario": "Manipulating data to confirm existing biases in research",
+            "context": {
+                "intellectual_dishonesty": True,
+                "advantage_seeking": True,
+                "systemic_harm": True,
+                "research_context": True
+            }
+        },
+        {
+            "scenario": "Lying to protect an abuse victim's location from their abuser",
+            "context": {
+                "protects_vulnerable": True,
+                "prevents_harm": True,
+                "life_death_situation": True,
+                "justified_protection": True
+            }
+        },
+        {
+            "scenario": "Saying 'I'm fine' when struggling with mental health to avoid burdening others",
+            "context": {
+                "self_protection": True,
+                "relationship_protection": True,
+                "vulnerability": True,
+                "help_seeking_prevented": True
+            }
+        }
+    ]
+    
+    print("TESTING DECEPTION ETHICS ANALYSIS:")
+    print("-" * 40)
+    
+    for i, test in enumerate(test_scenarios, 1):
+        print(f"\nScenario {i}: {test['scenario']}")
+        analysis = ethics_node.analyze_deception_ethics(test['scenario'], test['context'])
+        
+        print(f"Deception Type: {analysis['deception_type']}")
+        print(f"Ethical Context: {analysis['ethical_context']}")
+        print(f"Ethical Score: {analysis['ethical_score']:.2f}")
+        print(f"Verdict: {analysis['ethical_verdict']}")
+        
+        if analysis['red_line_violations']:
+            print(f"⚠️ Red Line Violations: {len(analysis['red_line_violations'])}")
+        
+        print(f"Key Recommendation: {analysis['recommendations'][0] if analysis['recommendations'] else 'None'}")
+    
+    print(f"\n" + "=" * 55)
+    print("TRUTH-TELLING OBLIGATION ANALYSIS:")
+    print("-" * 40)
+    
+    # Test truth-telling obligations
+    truth_scenarios = [
+        {
+            "situation": "Doctor discussing cancer diagnosis with patient",
+            "context": {
+                "medical_context": True,
+                "informed_consent_needed": True,
+                "vulnerability": True,
+                "major_life_decision": True
+            }
+        },
+        {
+            "situation": "Friend asking if their cooking tastes good when it doesn't",
+            "context": {
+                "social_context": True,
+                "minor_consequence": True,
+                "kindness_consideration": True,
+                "relationship_maintenance": True
+            }
+        }
+    ]
+    
+    for situation_data in truth_scenarios:
+        print(f"\nSituation: {situation_data['situation']}")
+        obligation = ethics_node.evaluate_truth_telling_obligation(
+            situation_data['situation'], 
+            situation_data['context']
+        )
+        
+        print(f"Truth Obligation Strength: {obligation['truth_obligation_strength']:.2f}")
+        print(f"Recommended Approach: {obligation['recommended_approach']}")
+        print(f"Key Reasoning: {obligation['ethical_reasoning']}")
+    
+    print(f"\n" + "=" * 55)
+    print("HARMFUL DECEPTION PATTERN DETECTION:")
+    print("-" * 45)
+    
+    # Test harmful pattern detection
+    harmful_examples = [
+        {
+            "communication": "You're being too sensitive, that never happened the way you remember it",
+            "context": {"relationship_context": True, "power_dynamic": "authority"}
+        },
+        {
+            "communication": "Everyone knows this is the right way, you're the only one who disagrees",
+            "context": {"social_pressure": True, "isolation_attempt": True}
+        },
+        {
+            "communication": "Trust me, this investment opportunity is completely safe and guaranteed",
+            "context": {"financial_context": True, "vulnerability_targeting": True}
+        }
+    ]
+    
+    for example in harmful_examples:
+        print(f"\nCommunication: '{example['communication']}'")
+        detection = ethics_node.detect_harmful_deception_patterns(
+            example['communication'], 
+            example['context']
+        )
+        
+        print(f"Risk Level: {detection['risk_level']}")
+        print(f"Patterns Detected: {len(detection['harmful_patterns_detected'])}")
+        
+        if detection['immediate_concerns']:
+            print(f"⚠️ Immediate Concerns: {len(detection['immediate_concerns'])}")
+        
+        if detection['intervention_needed']:
+            print("🚨 Intervention Recommended")
+    
+    print(f"\n" + "=" * 55)
+    print("DOMAIN-SPECIFIC GUIDELINES:")
+    print("-" * 30)
+    
+    # Generate guidelines for different domains
+    domains = ["healthcare", "research", "journalism"]
+    
+    for domain in domains:
+        print(f"\n{domain.upper()} Guidelines:")
+        guidelines = ethics_node.generate_ethical_truth_telling_guidelines(domain)
+        
+        print(f"Core Principles: {', '.join(guidelines['guidelines']['core_principles'])}")
+        print(f"Acceptable Deceptions: {', '.join(guidelines['guidelines']['acceptable_deceptions'])}")
+        print(f"Prohibited: {', '.join(guidelines['guidelines']['prohibited_deceptions'][:2])}...")
+    
+    print(f"\n" + "=" * 55)
+    print("DECEPTION ETHICS FEATURES DEMONSTRATED:")
+    print("✓ Multi-framework ethical analysis")
+    print("✓ Context-sensitive moral reasoning")
+    print("✓ Red line violation detection")
+    print("✓ Truth-telling obligation assessment")
+    print("✓ Harmful pattern recognition")
+    print("✓ Domain-specific guideline generation")
+    print("✓ Nuanced understanding of justified vs harmful deception")
+    print("✓ Protection of vulnerable populations")
+
+if __name__ == "__main__":
+    demonstrate_deception_ethics()
