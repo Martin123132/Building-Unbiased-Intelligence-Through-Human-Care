@@ -1,0 +1,545 @@
+"""
+BASIC LANGUAGE NODE - Foundational Example
+P2P AI Stewardship Project
+Domain: Fundamental Language and Linguistics
+"""
+
+import json
+import time
+import re
+from typing import Dict, List, Any, Optional
+
+class LanguageNode:
+    """
+    Basic language node containing fundamental linguistic knowledge.
+    Demonstrates grammar, etymology, and communication principles.
+    """
+    
+    def __init__(self, node_id: str = "language_basic_001"):
+        self.node_id = node_id
+        self.domain = "language"
+        self.specialization = "fundamental_grammar_etymology"
+        self.version = "1.0.0"
+        self.steward = "community_contributor"
+        
+        # Core linguistic knowledge - structural and historical facts
+        self.knowledge_base = {
+            "subject_verb_object": {
+                "structure": "Subject + Verb + Object",
+                "examples": [
+                    {"sentence": "The cat sat on the mat", "subject": "The cat", "verb": "sat", "object": "on the mat"},
+                    {"sentence": "She reads books", "subject": "She", "verb": "reads", "object": "books"},
+                    {"sentence": "Dogs chase balls", "subject": "Dogs", "verb": "chase", "object": "balls"}
+                ],
+                "certainty": 0.95,  # Well-established grammatical pattern
+                "languages": ["English", "French", "German", "many others"],
+                "alternatives": ["SOV (Japanese)", "VSO (Welsh)", "free word order (Latin)"]
+            },
+            
+            "etymology_examples": {
+                "telephone": {
+                    "origin": "Greek tele- (distant) + phone (sound/voice)",
+                    "literal_meaning": "distant sound",
+                    "year_coined": "1876",
+                    "certainty": 0.9
+                },
+                "philosophy": {
+                    "origin": "Greek philos (loving) + sophia (wisdom)",
+                    "literal_meaning": "love of wisdom",
+                    "certainty": 0.95
+                },
+                "democracy": {
+                    "origin": "Greek demos (people) + kratia (rule/power)",
+                    "literal_meaning": "rule by the people",
+                    "certainty": 0.95
+                },
+                "alphabet": {
+                    "origin": "Greek alpha + beta (first two letters)",
+                    "literal_meaning": "the first two letters",
+                    "certainty": 0.9
+                }
+            },
+            
+            "grammar_rules": {
+                "plural_formation": {
+                    "regular": "Add -s or -es (cat/cats, box/boxes)",
+                    "irregular": "Memorized forms (child/children, mouse/mice)",
+                    "examples": [
+                        {"singular": "book", "plural": "books", "rule": "add -s"},
+                        {"singular": "child", "plural": "children", "rule": "irregular"},
+                        {"singular": "fish", "plural": "fish", "rule": "no change"}
+                    ],
+                    "certainty": 0.9
+                },
+                "verb_tenses": {
+                    "present": "I walk",
+                    "past": "I walked", 
+                    "future": "I will walk",
+                    "present_perfect": "I have walked",
+                    "certainty": 0.95,
+                    "note": "English has complex tense system with many nuances"
+                }
+            },
+            
+            "communication_principles": {
+                "clarity": "Use simple, direct language when possible",
+                "context": "Meaning depends on situation and shared knowledge",
+                "ambiguity": "Many sentences have multiple possible meanings",
+                "examples": {
+                    "ambiguous": "I saw the man with the telescope",
+                    "interpretations": ["I used telescope to see man", "I saw man who had telescope"]
+                },
+                "certainty": 0.8
+            },
+            
+            "word_formation": {
+                "prefixes": {
+                    "un-": "not, opposite (unhappy, undo)",
+                    "re-": "again, back (redo, return)",
+                    "pre-": "before (preview, prevent)"
+                },
+                "suffixes": {
+                    "-tion": "action/state (creation, nation)",
+                    "-ly": "manner (quickly, slowly)",
+                    "-er": "one who does (teacher, worker)"
+                },
+                "certainty": 0.9
+            }
+        }
+        
+        # Areas requiring deeper linguistic knowledge
+        self.knowledge_gaps = {
+            "advanced_syntax": "Transformational grammar, syntactic trees, complex parsing",
+            "phonetics": "Sound systems, phonemes, pronunciation rules",
+            "semantics": "Meaning theory, formal semantics, pragmatics",
+            "historical_linguistics": "Language change, comparative linguistics",
+            "sociolinguistics": "Language variation, dialects, social factors",
+            "computational_linguistics": "Natural language processing, parsing algorithms"
+        }
+        
+        # Cross-domain connections
+        self.peer_connections = []
+        self.last_update = time.time()
+        
+    def query(self, question: str) -> Dict[str, Any]:
+        """
+        Answer linguistic questions based on knowledge base.
+        Focuses on structural patterns and historical origins.
+        """
+        
+        question_lower = question.lower()
+        
+        # Grammar and sentence structure
+        if any(term in question_lower for term in ["grammar", "sentence", "subject", "verb", "object"]):
+            return self._respond_grammar(question)
+        
+        # Etymology and word origins
+        elif any(term in question_lower for term in ["etymology", "origin", "comes from", "where does", "word history"]):
+            return self._respond_etymology(question)
+        
+        # Word formation and morphology
+        elif any(term in question_lower for term in ["prefix", "suffix", "word formation", "morphology"]):
+            return self._respond_morphology(question)
+        
+        # Communication and meaning
+        elif any(term in question_lower for term in ["meaning", "communication", "ambiguous", "interpret"]):
+            return self._respond_communication(question)
+        
+        # Language parsing and analysis
+        elif "analyze" in question_lower or "parse" in question_lower:
+            return self._analyze_language(question)
+        
+        # Unknown linguistic area
+        else:
+            return self._respond_unknown(question)
+    
+    def _respond_grammar(self, question: str) -> Dict[str, Any]:
+        """Respond to grammar and sentence structure questions"""
+        
+        knowledge = self.knowledge_base["subject_verb_object"]
+        
+        return {
+            "answer": f"Basic English follows {knowledge['structure']} pattern",
+            "certainty": knowledge["certainty"],
+            "examples": [f"{ex['sentence']} → S: {ex['subject']}, V: {ex['verb']}, O: {ex['object']}" 
+                        for ex in knowledge["examples"][:2]],
+            "pattern": knowledge["structure"],
+            "languages_using": knowledge["languages"],
+            "alternatives": knowledge["alternatives"],
+            "source_node": self.node_id,
+            "domain": self.domain,
+            "note": "Word order varies significantly across languages"
+        }
+    
+    def _respond_etymology(self, question: str) -> Dict[str, Any]:
+        """Respond to etymology and word origin questions"""
+        
+        # Check for specific words in the question
+        etymology_db = self.knowledge_base["etymology_examples"]
+        
+        found_word = None
+        for word in etymology_db.keys():
+            if word in question.lower():
+                found_word = word
+                break
+        
+        if found_word:
+            word_info = etymology_db[found_word]
+            return {
+                "answer": f"'{found_word}' comes from {word_info['origin']}",
+                "literal_meaning": word_info["literal_meaning"],
+                "certainty": word_info["certainty"],
+                "year_coined": word_info.get("year_coined", "ancient"),
+                "source_node": self.node_id,
+                "domain": self.domain
+            }
+        
+        # General etymology information
+        return {
+            "answer": "Etymology studies word origins and historical development",
+            "available_examples": list(etymology_db.keys()),
+            "process": "Trace words back through historical languages to find roots",
+            "common_sources": ["Latin", "Greek", "Germanic languages", "French"],
+            "certainty": 0.8,
+            "source_node": self.node_id,
+            "domain": self.domain
+        }
+    
+    def _respond_morphology(self, question: str) -> Dict[str, Any]:
+        """Respond to word formation questions"""
+        
+        if "prefix" in question.lower():
+            prefixes = self.knowledge_base["word_formation"]["prefixes"]
+            return {
+                "answer": "Prefixes attach to the beginning of words to modify meaning",
+                "examples": prefixes,
+                "certainty": 0.9,
+                "pattern": "prefix + root word = new meaning",
+                "source_node": self.node_id,
+                "domain": self.domain
+            }
+        
+        elif "suffix" in question.lower():
+            suffixes = self.knowledge_base["word_formation"]["suffixes"]
+            return {
+                "answer": "Suffixes attach to the end of words to modify meaning or function",
+                "examples": suffixes,
+                "certainty": 0.9,
+                "pattern": "root word + suffix = new meaning/function",
+                "source_node": self.node_id,
+                "domain": self.domain
+            }
+        
+        formation = self.knowledge_base["word_formation"]
+        return {
+            "answer": "Words are formed through prefixes, suffixes, and combining roots",
+            "prefixes": formation["prefixes"],
+            "suffixes": formation["suffixes"],
+            "certainty": formation["certainty"],
+            "source_node": self.node_id,
+            "domain": self.domain
+        }
+    
+    def _respond_communication(self, question: str) -> Dict[str, Any]:
+        """Respond to communication and meaning questions"""
+        
+        knowledge = self.knowledge_base["communication_principles"]
+        
+        return {
+            "answer": "Communication depends on clarity, context, and shared understanding",
+            "principles": {
+                "clarity": knowledge["clarity"],
+                "context": knowledge["context"],
+                "ambiguity": knowledge["ambiguity"]
+            },
+            "example_ambiguity": knowledge["examples"],
+            "certainty": knowledge["certainty"],
+            "source_node": self.node_id,
+            "domain": self.domain,
+            "note": "Language is inherently context-dependent and often ambiguous"
+        }
+    
+    def _analyze_language(self, question: str) -> Dict[str, Any]:
+        """Analyze specific sentences or phrases"""
+        
+        # Extract sentence to analyze from question
+        # Simple approach: look for quoted text or text after "analyze"
+        sentence_to_analyze = self._extract_sentence_from_question(question)
+        
+        if sentence_to_analyze:
+            analysis = self._parse_sentence(sentence_to_analyze)
+            return {
+                "sentence": sentence_to_analyze,
+                "analysis": analysis,
+                "certainty": 0.7,  # Basic parsing has limitations
+                "source_node": self.node_id,
+                "domain": self.domain,
+                "caveat": "This is a basic analysis - complex sentences require advanced parsing"
+            }
+        
+        return {
+            "answer": "Please provide the sentence you'd like me to analyze",
+            "capabilities": ["basic grammar parsing", "word identification", "simple structure analysis"],
+            "limitations": ["complex syntax", "deep semantic analysis", "pragmatic interpretation"],
+            "source_node": self.node_id,
+            "domain": self.domain
+        }
+    
+    def _extract_sentence_from_question(self, question: str) -> Optional[str]:
+        """Extract sentence to analyze from question"""
+        
+        # Look for quoted text
+        quote_match = re.search(r'"([^"]+)"', question)
+        if quote_match:
+            return quote_match.group(1)
+        
+        # Look for text after "analyze"
+        analyze_match = re.search(r'analyze\s+(.+)', question.lower())
+        if analyze_match:
+            return analyze_match.group(1).strip()
+        
+        return None
+    
+    def _parse_sentence(self, sentence: str) -> Dict[str, Any]:
+        """Basic sentence parsing"""
+        
+        words = sentence.split()
+        
+        # Very basic parsing - identify potential parts
+        analysis = {
+            "word_count": len(words),
+            "words": words
+        }
+        
+        # Simple subject-verb-object detection
+        if len(words) >= 3:
+            # Extremely basic: assume first word is subject, second is verb
+            analysis["possible_structure"] = {
+                "subject": words[0],
+                "verb": words[1] if len(words) > 1 else None,
+                "rest": " ".join(words[2:]) if len(words) > 2 else None
+            }
+        
+        # Check for question vs statement
+        if sentence.strip().endswith('?'):
+            analysis["sentence_type"] = "question"
+        elif sentence.strip().endswith('!'):
+            analysis["sentence_type"] = "exclamation"
+        else:
+            analysis["sentence_type"] = "statement"
+        
+        # Identify prefixes and suffixes in words
+        morphology = []
+        for word in words:
+            word_analysis = self._analyze_word_morphology(word.lower())
+            if word_analysis:
+                morphology.append({word: word_analysis})
+        
+        if morphology:
+            analysis["morphology"] = morphology
+        
+        return analysis
+    
+    def _analyze_word_morphology(self, word: str) -> Optional[Dict[str, str]]:
+        """Analyze word for prefixes and suffixes"""
+        
+        prefixes = self.knowledge_base["word_formation"]["prefixes"]
+        suffixes = self.knowledge_base["word_formation"]["suffixes"]
+        
+        analysis = {}
+        
+        # Check for prefixes
+        for prefix in prefixes.keys():
+            if word.startswith(prefix):
+                analysis["prefix"] = prefix
+                analysis["prefix_meaning"] = prefixes[prefix]
+                break
+        
+        # Check for suffixes
+        for suffix in suffixes.keys():
+            if word.endswith(suffix):
+                analysis["suffix"] = suffix
+                analysis["suffix_meaning"] = suffixes[suffix]
+                break
+        
+        return analysis if analysis else None
+    
+    def _respond_unknown(self, question: str) -> Dict[str, Any]:
+        """Respond when question is outside knowledge base"""
+        
+        # Identify potential knowledge gap
+        potential_domain = "unknown"
+        for gap_domain in self.knowledge_gaps.keys():
+            if any(term in question.lower() for term in gap_domain.split("_")):
+                potential_domain = gap_domain
+                break
+        
+        return {
+            "answer": "This question requires linguistic knowledge beyond my current scope.",
+            "certainty": 0.0,
+            "knowledge_gap": potential_domain,
+            "gap_description": self.knowledge_gaps.get(potential_domain, "Advanced linguistic area"),
+            "suggestion": f"This might require a node specializing in {potential_domain}",
+            "available_areas": list(self.knowledge_base.keys()),
+            "source_node": self.node_id,
+            "can_help_with": "Basic grammar, etymology, word formation, simple analysis"
+        }
+    
+    def verify_language_claim(self, claim: str) -> Dict[str, Any]:
+        """
+        Verify linguistic claims using available knowledge.
+        Important for network consensus on language facts.
+        """
+        
+        claim_lower = claim.lower()
+        
+        # Check etymology claims
+        if "comes from" in claim_lower or "etymology" in claim_lower:
+            for word, info in self.knowledge_base["etymology_examples"].items():
+                if word in claim_lower:
+                    expected_origin = info["origin"].lower()
+                    if any(part in claim_lower for part in expected_origin.split()):
+                        return {
+                            "verified": True,
+                            "explanation": f"Correct: {word} does come from {info['origin']}",
+                            "certainty": info["certainty"],
+                            "source_node": self.node_id
+                        }
+        
+        # Check grammar structure claims
+        if "subject verb object" in claim_lower:
+            return {
+                "verified": True,
+                "explanation": "English does typically follow Subject-Verb-Object order",
+                "certainty": 0.95,
+                "source_node": self.node_id
+            }
+        
+        return {
+            "verified": None,
+            "explanation": "Cannot verify this linguistic claim with current knowledge",
+            "certainty": 0.0,
+            "source_node": self.node_id
+        }
+    
+    def translate_structure(self, from_lang: str, to_lang: str, structure: str) -> Dict[str, Any]:
+        """
+        Basic structural translation concepts (not full translation).
+        Demonstrates cross-linguistic knowledge.
+        """
+        
+        if from_lang.lower() == "english" and to_lang.lower() == "japanese":
+            if structure.lower() == "svo":
+                return {
+                    "translation": "SOV (Subject-Object-Verb)",
+                    "example": "English 'I eat apples' → Japanese 'I apples eat'",
+                    "certainty": 0.9,
+                    "note": "Japanese typically uses Subject-Object-Verb order",
+                    "source_node": self.node_id
+                }
+        
+        return {
+            "translation": "Translation requires specialized language pair knowledge",
+            "available": "Basic structural information only",
+            "suggestion": "Need language-specific nodes for detailed translation",
+            "certainty": 0.0,
+            "source_node": self.node_id
+        }
+    
+    def get_node_status(self) -> Dict[str, Any]:
+        """Return current node status for network monitoring"""
+        
+        return {
+            "node_id": self.node_id,
+            "domain": self.domain,
+            "specialization": self.specialization,
+            "version": self.version,
+            "steward": self.steward,
+            "knowledge_areas": list(self.knowledge_base.keys()),
+            "knowledge_gaps": list(self.knowledge_gaps.keys()),
+            "language_capabilities": ["grammar_analysis", "etymology", "morphology", "basic_parsing"],
+            "last_update": self.last_update,
+            "peer_connections": len(self.peer_connections),
+            "status": "active"
+        }
+    
+    def connect_to_peer(self, peer_info: Dict[str, str]):
+        """Connect to another node in the P2P network"""
+        
+        self.peer_connections.append({
+            "node_id": peer_info["node_id"],
+            "domain": peer_info["domain"],
+            "connection_time": time.time()
+        })
+
+# Demonstration of the language node
+def demonstrate_language_node():
+    """Demonstrate the basic language node functionality"""
+    
+    print("BASIC LANGUAGE NODE DEMONSTRATION")
+    print("=" * 50)
+    
+    # Create the node
+    language_node = LanguageNode()
+    
+    # Show node status
+    status = language_node.get_node_status()
+    print(f"Node ID: {status['node_id']}")
+    print(f"Domain: {status['domain']}")
+    print(f"Specialization: {status['specialization']}")
+    print(f"Knowledge Areas: {', '.join(status['knowledge_areas'])}")
+    print(f"Language Capabilities: {', '.join(status['language_capabilities'])}")
+    print()
+    
+    # Test queries
+    test_questions = [
+        "How does English sentence structure work?",
+        "What is the etymology of the word 'telephone'?",
+        "How do prefixes work in English?",
+        "Why is language sometimes ambiguous?",
+        'Analyze the sentence "The cat sat on the mat"',
+        "How does Chinese grammar work?"  # Should show knowledge gap
+    ]
+    
+    print("TESTING LINGUISTIC QUERIES:")
+    print("-" * 32)
+    
+    for question in test_questions:
+        print(f"\nQ: {question}")
+        response = language_node.query(question)
+        
+        print(f"A: {response['answer']}")
+        if 'certainty' in response:
+            print(f"Certainty: {response['certainty']}")
+        if 'knowledge_gap' in response:
+            print(f"Knowledge Gap: {response['knowledge_gap']}")
+        if 'examples' in response and response['examples']:
+            print(f"Examples: {response['examples'][:2]}")  # Show first 2
+    
+    print(f"\n" + "=" * 50)
+    print("VERIFICATION TESTING:")
+    print("-" * 25)
+    
+    # Test verification capabilities
+    test_claims = [
+        "English follows subject-verb-object order",
+        "The word 'telephone' comes from Greek",
+        "Philosophy means love of wisdom"
+    ]
+    
+    for claim in test_claims:
+        print(f"\nClaim: {claim}")
+        verification = language_node.verify_language_claim(claim)
+        print(f"Verified: {verification['verified']}")
+        print(f"Explanation: {verification['explanation']}")
+    
+    print(f"\n" + "=" * 50)
+    print("NODE FEATURES DEMONSTRATED:")
+    print("✓ Grammar structure analysis with cross-linguistic awareness")
+    print("✓ Etymology and word origin knowledge")
+    print("✓ Morphological analysis (prefixes, suffixes)")
+    print("✓ Basic sentence parsing capabilities")
+    print("✓ Verification of linguistic claims for network consensus")
+
+if __name__ == "__main__":
+    demonstrate_language_node()
