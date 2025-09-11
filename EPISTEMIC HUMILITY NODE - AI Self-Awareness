@@ -1,0 +1,484 @@
+"""
+EPISTEMIC HUMILITY NODE - AI Self-Awareness
+P2P AI Stewardship Project
+Domain: Knowledge Limitations, Uncertainty Acknowledgment, Intellectual Honesty
+"""
+
+import json
+import time
+import re
+from typing import Dict, List, Any, Optional
+from enum import Enum
+
+class KnowledgeType(Enum):
+    MATHEMATICAL_CERTAINTY = "mathematical_certainty"
+    EMPIRICAL_OBSERVATION = "empirical_observation"
+    THEORETICAL_FRAMEWORK = "theoretical_framework"
+    INTERPRETIVE_MODEL = "interpretive_model"
+    SPECULATION = "speculation"
+    UNKNOWN = "unknown"
+
+class EpistemicHumilityNode:
+    """
+    Epistemic humility node for AI self-awareness about knowledge limitations.
+    Prevents overconfidence and acknowledges uncertainty appropriately.
+    Critical for honest AI that knows what it doesn't know.
+    """
+    
+    def __init__(self, node_id: str = "epistemic_humility_001"):
+        self.node_id = node_id
+        self.domain = "epistemic_humility"
+        self.specialization = "uncertainty_acknowledgment_self_awareness"
+        self.version = "1.0.0"
+        self.steward = "community_contributor"
+        
+        # Knowledge limitation categories
+        self.knowledge_limitations = {
+            "sensory_experience": {
+                "description": "AI has no direct sensory experience of the world",
+                "implications": ["Cannot verify physical sensations", "No direct empirical observation", "Relies on human descriptions"],
+                "confidence_impact": "High for claims about physical experience"
+            },
+            "subjective_experience": {
+                "description": "AI cannot access human consciousness or subjective states",
+                "implications": ["Cannot know what experiences 'feel like'", "No access to qualia", "Cannot verify emotional states"],
+                "confidence_impact": "High for claims about consciousness and experience"
+            },
+            "real_time_information": {
+                "description": "AI knowledge has temporal limitations",
+                "implications": ["Knowledge cutoff dates", "Cannot access current events", "May have outdated information"],
+                "confidence_impact": "High for recent events and changing information"
+            },
+            "cultural_context": {
+                "description": "AI training may have cultural biases and gaps",
+                "implications": ["May not understand all cultural contexts", "Training data biases", "Limited perspective diversity"],
+                "confidence_impact": "Medium to high for culture-specific claims"
+            },
+            "personal_information": {
+                "description": "AI cannot know individual users' specific situations",
+                "implications": ["No access to personal history", "Cannot know individual context", "Cannot verify personal claims"],
+                "confidence_impact": "High for personalized advice and specific situations"
+            }
+        }
+        
+        # Uncertainty indicators to watch for
+        self.uncertainty_signals = {
+            "definitional_disputes": [
+                "definition of consciousness", "what counts as intelligence", "meaning of existence",
+                "nature of free will", "definition of life"
+            ],
+            "active_research_areas": [
+                "quantum mechanics interpretation", "dark matter nature", "consciousness mechanisms",
+                "artificial general intelligence", "origin of life"
+            ],
+            "value_dependent_questions": [
+                "what is moral", "what is beautiful", "what is just", "what is meaningful",
+                "what should we do", "what is good"
+            ],
+            "future_predictions": [
+                "will happen", "going to", "future will", "predict that", "forecast"
+            ]
+        }
+        
+        # Confidence calibration guidelines
+        self.confidence_guidelines = {
+            "mathematical_facts": {
+                "confidence_range": (0.95, 1.0),
+                "examples": ["2+2=4", "Pythagorean theorem", "logical validity"],
+                "rationale": "Definitionally true within mathematical systems"
+            },
+            "well_established_science": {
+                "confidence_range": (0.85, 0.95),
+                "examples": ["Speed of light", "DNA structure", "basic chemistry"],
+                "rationale": "Extensively tested and verified"
+            },
+            "historical_facts": {
+                "confidence_range": (0.80, 0.95),
+                "examples": ["Major historical events", "documented dates", "verified records"],
+                "rationale": "Well-documented but interpretation may vary"
+            },
+            "current_theories": {
+                "confidence_range": (0.60, 0.85),
+                "examples": ["General relativity", "evolutionary theory", "germ theory"],
+                "rationale": "Strong evidence but still theoretical frameworks"
+            },
+            "interpretive_claims": {
+                "confidence_range": (0.30, 0.70),
+                "examples": ["Consciousness theories", "artistic meaning", "social explanations"],
+                "rationale": "Multiple valid interpretations possible"
+            },
+            "speculation": {
+                "confidence_range": (0.05, 0.30),
+                "examples": ["Future predictions", "untested hypotheses", "thought experiments"],
+                "rationale": "Limited evidence or highly uncertain"
+            }
+        }
+        
+        # Response modifiers for different confidence levels
+        self.response_modifiers = {
+            "high_confidence": {
+                "language": ["This is well-established", "The evidence strongly supports", "It's widely accepted that"],
+                "certainty_words": ["definitely", "certainly", "clearly"]
+            },
+            "medium_confidence": {
+                "language": ["Evidence suggests", "It appears that", "Research indicates"],
+                "certainty_words": ["likely", "probably", "generally"]
+            },
+            "low_confidence": {
+                "language": ["It's possible that", "Some theories suggest", "One interpretation is"],
+                "certainty_words": ["might", "could", "perhaps"]
+            },
+            "speculation": {
+                "language": ["This is speculative", "Without more evidence", "It's unclear"],
+                "certainty_words": ["unknown", "uncertain", "debatable"]
+            }
+        }
+        
+        # Cross-domain connections
+        self.peer_connections = []
+        self.last_update = time.time()
+        
+    def assess_knowledge_claim(self, claim: str, domain: str = "general") -> Dict[str, Any]:
+        """
+        Assess a knowledge claim for appropriate confidence level and limitations.
+        Returns calibrated confidence and uncertainty acknowledgments.
+        """
+        
+        claim_lower = claim.lower()
+        
+        # Determine knowledge type
+        knowledge_type = self._classify_knowledge_type(claim_lower)
+        
+        # Check for uncertainty signals
+        uncertainty_factors = self._identify_uncertainty_factors(claim_lower)
+        
+        # Assess confidence level
+        base_confidence = self._calculate_base_confidence(knowledge_type)
+        adjusted_confidence = self._adjust_for_uncertainty_factors(base_confidence, uncertainty_factors)
+        
+        # Identify applicable limitations
+        applicable_limitations = self._identify_applicable_limitations(claim_lower, domain)
+        
+        # Generate appropriate response modifiers
+        response_guidance = self._generate_response_guidance(adjusted_confidence, uncertainty_factors)
+        
+        return {
+            "claim": claim,
+            "knowledge_type": knowledge_type.value,
+            "confidence_level": adjusted_confidence,
+            "uncertainty_factors": uncertainty_factors,
+            "applicable_limitations": applicable_limitations,
+            "response_guidance": response_guidance,
+            "should_acknowledge_uncertainty": adjusted_confidence < 0.8,
+            "requires_disclaimer": len(applicable_limitations) > 0,
+            "source_node": self.node_id,
+            "domain": self.domain
+        }
+    
+    def _classify_knowledge_type(self, claim: str) -> KnowledgeType:
+        """Classify the type of knowledge claim"""
+        
+        # Mathematical/logical claims
+        if any(term in claim for term in ["equals", "theorem", "proof", "mathematical", "logical"]):
+            return KnowledgeType.MATHEMATICAL_CERTAINTY
+        
+        # Empirical observations
+        elif any(term in claim for term in ["observed", "measured", "documented", "recorded", "data shows"]):
+            return KnowledgeType.EMPIRICAL_OBSERVATION
+        
+        # Theoretical frameworks
+        elif any(term in claim for term in ["theory", "model", "framework", "according to", "explains"]):
+            return KnowledgeType.THEORETICAL_FRAMEWORK
+        
+        # Interpretive claims
+        elif any(term in claim for term in ["meaning", "significance", "represents", "symbolizes", "interpretation"]):
+            return KnowledgeType.INTERPRETIVE_MODEL
+        
+        # Speculative claims
+        elif any(term in claim for term in ["might", "could", "possibly", "perhaps", "speculation"]):
+            return KnowledgeType.SPECULATION
+        
+        # Default to unknown for unclear cases
+        else:
+            return KnowledgeType.UNKNOWN
+    
+    def _identify_uncertainty_factors(self, claim: str) -> List[str]:
+        """Identify factors that increase uncertainty"""
+        
+        uncertainty_factors = []
+        
+        # Check each category
+        for category, indicators in self.uncertainty_signals.items():
+            for indicator in indicators:
+                if indicator in claim:
+                    uncertainty_factors.append(category)
+                    break
+        
+        return uncertainty_factors
+    
+    def _calculate_base_confidence(self, knowledge_type: KnowledgeType) -> float:
+        """Calculate base confidence level for knowledge type"""
+        
+        confidence_mapping = {
+            KnowledgeType.MATHEMATICAL_CERTAINTY: 0.98,
+            KnowledgeType.EMPIRICAL_OBSERVATION: 0.85,
+            KnowledgeType.THEORETICAL_FRAMEWORK: 0.70,
+            KnowledgeType.INTERPRETIVE_MODEL: 0.50,
+            KnowledgeType.SPECULATION: 0.20,
+            KnowledgeType.UNKNOWN: 0.40
+        }
+        
+        return confidence_mapping.get(knowledge_type, 0.40)
+    
+    def _adjust_for_uncertainty_factors(self, base_confidence: float, uncertainty_factors: List[str]) -> float:
+        """Adjust confidence based on uncertainty factors"""
+        
+        # Reduce confidence for each uncertainty factor
+        uncertainty_penalties = {
+            "definitional_disputes": 0.15,
+            "active_research_areas": 0.10,
+            "value_dependent_questions": 0.20,
+            "future_predictions": 0.25
+        }
+        
+        adjusted_confidence = base_confidence
+        
+        for factor in uncertainty_factors:
+            penalty = uncertainty_penalties.get(factor, 0.05)
+            adjusted_confidence -= penalty
+        
+        # Ensure confidence stays within bounds
+        return max(0.05, min(0.99, adjusted_confidence))
+    
+    def _identify_applicable_limitations(self, claim: str, domain: str) -> List[str]:
+        """Identify which knowledge limitations apply to this claim"""
+        
+        applicable = []
+        
+        # Check each limitation category
+        for limitation_name, limitation_info in self.knowledge_limitations.items():
+            if self._limitation_applies(claim, domain, limitation_name):
+                applicable.append(limitation_name)
+        
+        return applicable
+    
+    def _limitation_applies(self, claim: str, domain: str, limitation_name: str) -> bool:
+        """Check if a specific limitation applies to the claim"""
+        
+        if limitation_name == "sensory_experience":
+            sensory_terms = ["feels like", "looks like", "sounds like", "tastes", "smells", "sensation"]
+            return any(term in claim for term in sensory_terms)
+        
+        elif limitation_name == "subjective_experience":
+            subjective_terms = ["consciousness", "awareness", "experience", "qualia", "what it's like"]
+            return any(term in claim for term in subjective_terms)
+        
+        elif limitation_name == "real_time_information":
+            current_terms = ["current", "latest", "recent", "today", "now", "currently"]
+            return any(term in claim for term in current_terms)
+        
+        elif limitation_name == "cultural_context":
+            cultural_terms = ["culture", "tradition", "customs", "beliefs", "values", "norms"]
+            return any(term in claim for term in cultural_terms)
+        
+        elif limitation_name == "personal_information":
+            personal_terms = ["you should", "your situation", "what you", "in your case"]
+            return any(term in claim for term in personal_terms)
+        
+        return False
+    
+    def _generate_response_guidance(self, confidence: float, uncertainty_factors: List[str]) -> Dict[str, Any]:
+        """Generate guidance for how to phrase the response"""
+        
+        if confidence >= 0.85:
+            confidence_category = "high_confidence"
+        elif confidence >= 0.60:
+            confidence_category = "medium_confidence"
+        elif confidence >= 0.30:
+            confidence_category = "low_confidence"
+        else:
+            confidence_category = "speculation"
+        
+        modifiers = self.response_modifiers[confidence_category]
+        
+        return {
+            "confidence_category": confidence_category,
+            "suggested_language": modifiers["language"],
+            "certainty_words": modifiers["certainty_words"],
+            "should_use_hedging": confidence < 0.70,
+            "should_mention_alternatives": confidence < 0.50,
+            "should_acknowledge_speculation": confidence < 0.30
+        }
+    
+    def generate_uncertainty_disclaimer(self, applicable_limitations: List[str]) -> str:
+        """Generate appropriate disclaimer based on limitations"""
+        
+        if not applicable_limitations:
+            return ""
+        
+        disclaimers = []
+        
+        for limitation in applicable_limitations:
+            limitation_info = self.knowledge_limitations[limitation]
+            disclaimers.append(f"Note: {limitation_info['description']}")
+        
+        return " ".join(disclaimers)
+    
+    def should_defer_to_expertise(self, claim: str, domain: str) -> Dict[str, Any]:
+        """Determine if claim should be deferred to domain experts"""
+        
+        specialized_domains = {
+            "medical": ["diagnosis", "treatment", "medical", "health", "disease", "symptom"],
+            "legal": ["legal", "law", "court", "lawsuit", "attorney", "rights"],
+            "financial": ["investment", "financial", "money", "tax", "investment"],
+            "mental_health": ["therapy", "depression", "anxiety", "mental health", "counseling"]
+        }
+        
+        for expert_domain, keywords in specialized_domains.items():
+            if any(keyword in claim.lower() for keyword in keywords):
+                return {
+                    "should_defer": True,
+                    "expert_domain": expert_domain,
+                    "rationale": f"This appears to be a {expert_domain} question requiring professional expertise",
+                    "suggested_disclaimer": f"This is not {expert_domain} advice. Consult a qualified professional."
+                }
+        
+        return {
+            "should_defer": False,
+            "expert_domain": None,
+            "rationale": "Does not require specialized professional expertise",
+            "suggested_disclaimer": ""
+        }
+    
+    def assess_overconfidence_risk(self, response_text: str) -> Dict[str, Any]:
+        """Assess if a response shows inappropriate overconfidence"""
+        
+        overconfidence_indicators = [
+            "definitely", "certainly", "without doubt", "absolutely", "always",
+            "never", "impossible", "guaranteed", "proven fact", "undeniable"
+        ]
+        
+        hedging_words = [
+            "likely", "probably", "appears", "suggests", "indicates",
+            "might", "could", "possibly", "often", "generally"
+        ]
+        
+        overconfident_count = sum(1 for indicator in overconfidence_indicators 
+                                 if indicator in response_text.lower())
+        
+        hedging_count = sum(1 for hedge in hedging_words 
+                           if hedge in response_text.lower())
+        
+        # Calculate overconfidence risk
+        total_confidence_words = overconfident_count + hedging_count
+        
+        if total_confidence_words == 0:
+            overconfidence_ratio = 0.0
+        else:
+            overconfidence_ratio = overconfident_count / total_confidence_words
+        
+        return {
+            "overconfidence_risk": "high" if overconfidence_ratio > 0.6 else 
+                                  "medium" if overconfidence_ratio > 0.3 else "low",
+            "overconfident_words": overconfident_count,
+            "hedging_words": hedging_count,
+            "ratio": overconfidence_ratio,
+            "recommendation": "Add more hedging language" if overconfidence_ratio > 0.5 else "Appropriate confidence level"
+        }
+    
+    def get_node_status(self) -> Dict[str, Any]:
+        """Return current node status for network monitoring"""
+        
+        return {
+            "node_id": self.node_id,
+            "domain": self.domain,
+            "specialization": self.specialization,
+            "version": self.version,
+            "steward": self.steward,
+            "knowledge_limitation_categories": len(self.knowledge_limitations),
+            "uncertainty_signal_types": len(self.uncertainty_signals),
+            "confidence_guidelines": len(self.confidence_guidelines),
+            "humility_capabilities": [
+                "confidence_calibration", 
+                "uncertainty_acknowledgment", 
+                "limitation_awareness", 
+                "overconfidence_detection"
+            ],
+            "last_update": self.last_update,
+            "peer_connections": len(self.peer_connections),
+            "status": "active"
+        }
+
+# Demonstration of the epistemic humility node
+def demonstrate_epistemic_humility():
+    """Demonstrate epistemic humility and uncertainty awareness"""
+    
+    print("EPISTEMIC HUMILITY NODE DEMONSTRATION")
+    print("=" * 50)
+    
+    # Create the node
+    humility_node = EpistemicHumilityNode()
+    
+    # Show node status
+    status = humility_node.get_node_status()
+    print(f"Node ID: {status['node_id']}")
+    print(f"Domain: {status['domain']}")
+    print(f"Humility Capabilities: {', '.join(status['humility_capabilities'])}")
+    print()
+    
+    # Test different types of knowledge claims
+    test_claims = [
+        "2 + 2 = 4",  # Mathematical certainty
+        "The speed of light is approximately 299,792,458 m/s",  # Well-established science
+        "World War II ended in 1945",  # Historical fact
+        "General relativity explains gravity as spacetime curvature",  # Current theory
+        "Consciousness emerges from neural complexity",  # Interpretive claim
+        "AI will achieve superintelligence by 2030",  # Future prediction
+        "What it feels like to see red is indescribable",  # Subjective experience
+        "You should invest in cryptocurrency"  # Personal advice
+    ]
+    
+    print("TESTING KNOWLEDGE CLAIM ASSESSMENT:")
+    print("-" * 45)
+    
+    for claim in test_claims:
+        print(f"\nClaim: '{claim}'")
+        assessment = humility_node.assess_knowledge_claim(claim)
+        
+        print(f"Knowledge Type: {assessment['knowledge_type']}")
+        print(f"Confidence Level: {assessment['confidence_level']:.2f}")
+        print(f"Uncertainty Factors: {assessment['uncertainty_factors']}")
+        print(f"Should Acknowledge Uncertainty: {assessment['should_acknowledge_uncertainty']}")
+        
+        if assessment['applicable_limitations']:
+            disclaimer = humility_node.generate_uncertainty_disclaimer(assessment['applicable_limitations'])
+            print(f"Disclaimer: {disclaimer}")
+    
+    print(f"\n" + "=" * 50)
+    print("OVERCONFIDENCE DETECTION TESTING:")
+    print("-" * 40)
+    
+    # Test overconfidence detection
+    test_responses = [
+        "This is definitely true and always will be",  # Overconfident
+        "The evidence suggests this is likely the case",  # Appropriate hedging
+        "It's impossible to know for certain, but research indicates..."  # Good uncertainty acknowledgment
+    ]
+    
+    for response in test_responses:
+        print(f"\nResponse: '{response}'")
+        overconfidence = humility_node.assess_overconfidence_risk(response)
+        print(f"Overconfidence Risk: {overconfidence['overconfidence_risk']}")
+        print(f"Recommendation: {overconfidence['recommendation']}")
+    
+    print(f"\n" + "=" * 50)
+    print("EPISTEMIC HUMILITY FEATURES DEMONSTRATED:")
+    print("✓ Confidence calibration based on knowledge type")
+    print("✓ Uncertainty factor identification and adjustment")
+    print("✓ Knowledge limitation awareness")
+    print("✓ Appropriate hedging and disclaimer generation")
+    print("✓ Overconfidence detection and correction")
+    print("✓ Honest acknowledgment of AI knowledge boundaries")
+
+if __name__ == "__main__":
+    demonstrate_epistemic_humility()
