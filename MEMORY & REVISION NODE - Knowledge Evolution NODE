@@ -1,0 +1,803 @@
+"""
+MEMORY & REVISION NODE - Knowledge Evolution
+P2P AI Stewardship Project
+Domain: Knowledge Storage, Updates, Corrections, and Network Learning
+"""
+
+import json
+import time
+import hashlib
+from typing import Dict, List, Any, Optional, Tuple
+from datetime import datetime, timedelta
+from enum import Enum
+
+class RevisionType(Enum):
+    CORRECTION = "correction"
+    UPDATE = "update"
+    EXPANSION = "expansion"
+    DEPRECATION = "deprecation"
+    MERGE = "merge"
+    SPLIT = "split"
+
+class ConfidenceLevel(Enum):
+    VERIFIED = "verified"
+    HIGH = "high"
+    MEDIUM = "medium"
+    LOW = "low"
+    DISPUTED = "disputed"
+
+class MemoryRevisionNode:
+    """
+    Memory and revision node for the P2P AI stewardship network.
+    Handles knowledge storage, updates, corrections, and network-wide learning.
+    Critical for maintaining accuracy and enabling collaborative knowledge evolution.
+    """
+    
+    def __init__(self, node_id: str = "memory_revision_001"):
+        self.node_id = node_id
+        self.domain = "memory_revision"
+        self.specialization = "knowledge_evolution_network_learning"
+        self.version = "1.0.0"
+        self.steward = "community_contributor"
+        
+        # Knowledge storage with versioning
+        self.knowledge_store = {}
+        self.revision_history = {}
+        self.pending_revisions = {}
+        self.consensus_tracking = {}
+        
+        # Network memory - what each node knows about others
+        self.network_topology = {}
+        self.node_specializations = {}
+        self.trust_relationships = {}
+        
+        # Learning patterns - what gets updated frequently
+        self.update_patterns = {
+            "rapidly_changing": {
+                "examples": ["current_events", "technology_trends", "market_data"],
+                "update_frequency": "daily",
+                "confidence_decay": 0.1  # per day
+            },
+            "evolving_knowledge": {
+                "examples": ["scientific_theories", "best_practices", "social_norms"],
+                "update_frequency": "monthly",
+                "confidence_decay": 0.01  # per month
+            },
+            "stable_facts": {
+                "examples": ["historical_events", "mathematical_proofs", "physical_constants"],
+                "update_frequency": "rarely",
+                "confidence_decay": 0.001  # per year
+            }
+        }
+        
+        # Revision validation rules
+        self.validation_rules = {
+            "source_credibility": {
+                "peer_reviewed": 1.0,
+                "expert_consensus": 0.9,
+                "community_verified": 0.8,
+                "single_source": 0.6,
+                "anonymous": 0.3
+            },
+            "evidence_strength": {
+                "direct_measurement": 1.0,
+                "controlled_study": 0.9,
+                "observational_data": 0.7,
+                "expert_opinion": 0.6,
+                "anecdotal": 0.3
+            },
+            "consensus_requirements": {
+                "mathematical_proof": 0.95,  # Near certainty required
+                "scientific_fact": 0.80,    # Strong consensus
+                "historical_event": 0.75,   # Good documentation
+                "cultural_knowledge": 0.60, # Variable interpretations
+                "opinion_based": 0.40       # Low threshold for inclusion
+            }
+        }
+        
+        # Conflict resolution strategies
+        self.conflict_resolution = {
+            "version_conflicts": {
+                "strategy": "consensus_voting",
+                "threshold": 0.67,  # 2/3 majority
+                "timeout": 24  # hours
+            },
+            "contradictory_facts": {
+                "strategy": "evidence_weighting",
+                "require_sources": True,
+                "escalate_threshold": 0.5
+            },
+            "interpretation_disputes": {
+                "strategy": "multiple_perspectives",
+                "preserve_alternatives": True,
+                "flag_uncertainty": True
+            }
+        }
+        
+        # Cross-node connections for memory sync
+        self.peer_connections = []
+        self.sync_schedules = {}
+        self.last_global_sync = time.time()
+        
+    def store_knowledge(self, key: str, content: Any, metadata: Dict[str, Any]) -> str:
+        """
+        Store knowledge with full revision tracking and metadata.
+        Returns version hash for this storage event.
+        """
+        
+        timestamp = datetime.now().isoformat()
+        version_hash = self._generate_version_hash(key, content, timestamp)
+        
+        # Create knowledge entry
+        knowledge_entry = {
+            "content": content,
+            "metadata": metadata,
+            "timestamp": timestamp,
+            "version": version_hash,
+            "confidence": metadata.get("confidence", 0.5),
+            "source_nodes": metadata.get("source_nodes", [self.node_id]),
+            "validation_score": self._calculate_validation_score(metadata),
+            "last_verified": timestamp,
+            "access_count": 0,
+            "revision_count": 0
+        }
+        
+        # Store or update
+        if key not in self.knowledge_store:
+            self.knowledge_store[key] = knowledge_entry
+            self.revision_history[key] = [knowledge_entry.copy()]
+        else:
+            # Create revision
+            old_entry = self.knowledge_store[key].copy()
+            self.knowledge_store[key] = knowledge_entry
+            self.revision_history[key].append(knowledge_entry.copy())
+            
+            # Log the revision
+            self._log_revision(key, old_entry, knowledge_entry, RevisionType.UPDATE)
+        
+        return version_hash
+    
+    def propose_revision(self, key: str, new_content: Any, revision_type: RevisionType, 
+                        justification: str, proposer_id: str) -> str:
+        """
+        Propose a revision to existing knowledge.
+        Returns proposal ID for tracking.
+        """
+        
+        if key not in self.knowledge_store:
+            raise ValueError(f"Cannot revise non-existent knowledge: {key}")
+        
+        proposal_id = self._generate_proposal_id(key, proposer_id)
+        
+        proposal = {
+            "key": key,
+            "current_content": self.knowledge_store[key]["content"],
+            "proposed_content": new_content,
+            "revision_type": revision_type.value,
+            "justification": justification,
+            "proposer_id": proposer_id,
+            "timestamp": datetime.now().isoformat(),
+            "votes": {"support": [], "oppose": [], "abstain": []},
+            "evidence": [],
+            "status": "pending",
+            "discussion": []
+        }
+        
+        self.pending_revisions[proposal_id] = proposal
+        
+        # Notify relevant nodes
+        self._notify_stakeholders(key, proposal_id)
+        
+        return proposal_id
+    
+    def vote_on_revision(self, proposal_id: str, voter_id: str, vote: str, 
+                        reasoning: str = "") -> Dict[str, Any]:
+        """
+        Vote on a pending revision. Returns current vote status.
+        """
+        
+        if proposal_id not in self.pending_revisions:
+            raise ValueError(f"Proposal not found: {proposal_id}")
+        
+        proposal = self.pending_revisions[proposal_id]
+        
+        # Remove any previous vote by this voter
+        for vote_type in proposal["votes"]:
+            if voter_id in proposal["votes"][vote_type]:
+                proposal["votes"][vote_type].remove(voter_id)
+        
+        # Add new vote
+        if vote in proposal["votes"]:
+            proposal["votes"][vote].append(voter_id)
+            
+            # Log reasoning if provided
+            if reasoning:
+                proposal["discussion"].append({
+                    "voter_id": voter_id,
+                    "vote": vote,
+                    "reasoning": reasoning,
+                    "timestamp": datetime.now().isoformat()
+                })
+        
+        # Check if consensus reached
+        consensus_result = self._check_consensus(proposal_id)
+        
+        return {
+            "proposal_id": proposal_id,
+            "current_votes": proposal["votes"],
+            "consensus_reached": consensus_result["reached"],
+            "action": consensus_result.get("action", "continue_voting")
+        }
+    
+    def get_knowledge_with_confidence(self, key: str) -> Dict[str, Any]:
+        """
+        Retrieve knowledge with current confidence level and uncertainty factors.
+        """
+        
+        if key not in self.knowledge_store:
+            return {
+                "found": False,
+                "content": None,
+                "confidence": 0.0,
+                "explanation": "Knowledge not found in network"
+            }
+        
+        entry = self.knowledge_store[key]
+        
+        # Calculate current confidence (may decay over time)
+        current_confidence = self._calculate_current_confidence(key, entry)
+        
+        # Check for conflicting information
+        conflicts = self._check_for_conflicts(key)
+        
+        # Assess freshness
+        freshness = self._assess_freshness(key, entry)
+        
+        return {
+            "found": True,
+            "content": entry["content"],
+            "confidence": current_confidence,
+            "original_confidence": entry["confidence"],
+            "validation_score": entry["validation_score"],
+            "last_verified": entry["last_verified"],
+            "revision_count": entry["revision_count"],
+            "conflicts": conflicts,
+            "freshness": freshness,
+            "source_nodes": entry["source_nodes"],
+            "uncertainty_factors": self._identify_uncertainty_factors(key, entry)
+        }
+    
+    def sync_with_peer(self, peer_node_id: str, peer_knowledge: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Synchronize knowledge with a peer node, handling conflicts and updates.
+        """
+        
+        sync_result = {
+            "updates_received": 0,
+            "updates_sent": 0,
+            "conflicts_detected": 0,
+            "consensus_items": 0,
+            "timestamp": datetime.now().isoformat()
+        }
+        
+        # Compare knowledge stores
+        for key, peer_entry in peer_knowledge.items():
+            if key not in self.knowledge_store:
+                # New knowledge from peer
+                if self._validate_peer_knowledge(peer_entry):
+                    self.store_knowledge(key, peer_entry["content"], peer_entry["metadata"])
+                    sync_result["updates_received"] += 1
+            else:
+                # Check for conflicts or updates
+                conflict_result = self._resolve_knowledge_conflict(key, peer_entry)
+                
+                if conflict_result["action"] == "update_local":
+                    self.store_knowledge(key, peer_entry["content"], peer_entry["metadata"])
+                    sync_result["updates_received"] += 1
+                elif conflict_result["action"] == "conflict":
+                    sync_result["conflicts_detected"] += 1
+                    # Flag for manual resolution
+                    self._flag_conflict(key, peer_node_id, peer_entry)
+        
+        # Send our updates to peer (would be handled by peer's sync method)
+        sync_result["peer_node"] = peer_node_id
+        
+        return sync_result
+    
+    def generate_learning_report(self) -> Dict[str, Any]:
+        """
+        Generate a report on network learning patterns and knowledge evolution.
+        """
+        
+        total_entries = len(self.knowledge_store)
+        total_revisions = sum(len(history) - 1 for history in self.revision_history.values())
+        
+        # Analyze revision patterns
+        revision_analysis = self._analyze_revision_patterns()
+        
+        # Confidence distribution
+        confidence_dist = self._analyze_confidence_distribution()
+        
+        # Most disputed topics
+        disputed_topics = self._identify_disputed_topics()
+        
+        # Knowledge freshness
+        freshness_analysis = self._analyze_knowledge_freshness()
+        
+        return {
+            "network_stats": {
+                "total_knowledge_entries": total_entries,
+                "total_revisions": total_revisions,
+                "pending_revisions": len(self.pending_revisions),
+                "active_conflicts": len([k for k in self.knowledge_store.keys() 
+                                       if self._check_for_conflicts(k)]),
+            },
+            "learning_patterns": revision_analysis,
+            "confidence_distribution": confidence_dist,
+            "disputed_topics": disputed_topics,
+            "knowledge_freshness": freshness_analysis,
+            "network_health": self._assess_network_health(),
+            "recommendations": self._generate_improvement_recommendations()
+        }
+    
+    def _generate_version_hash(self, key: str, content: Any, timestamp: str) -> str:
+        """Generate unique hash for this version"""
+        hash_input = f"{key}_{str(content)}_{timestamp}_{self.node_id}"
+        return hashlib.md5(hash_input.encode()).hexdigest()[:12]
+    
+    def _generate_proposal_id(self, key: str, proposer_id: str) -> str:
+        """Generate unique proposal ID"""
+        timestamp = datetime.now().isoformat()
+        return f"prop_{key}_{proposer_id}_{int(time.time())}"
+    
+    def _calculate_validation_score(self, metadata: Dict[str, Any]) -> float:
+        """Calculate validation score based on metadata"""
+        score = 0.0
+        
+        # Source credibility
+        source_type = metadata.get("source_type", "anonymous")
+        score += self.validation_rules["source_credibility"].get(source_type, 0.3)
+        
+        # Evidence strength
+        evidence_type = metadata.get("evidence_type", "anecdotal")
+        score += self.validation_rules["evidence_strength"].get(evidence_type, 0.3)
+        
+        # Normalize to 0-1 range
+        return min(1.0, score / 2.0)
+    
+    def _calculate_current_confidence(self, key: str, entry: Dict[str, Any]) -> float:
+        """Calculate current confidence considering time decay"""
+        
+        original_confidence = entry["confidence"]
+        last_verified = datetime.fromisoformat(entry["last_verified"])
+        now = datetime.now()
+        time_diff = now - last_verified
+        
+        # Determine decay rate based on content type
+        content_type = entry["metadata"].get("content_type", "evolving_knowledge")
+        decay_info = self.update_patterns.get(content_type, self.update_patterns["evolving_knowledge"])
+        
+        # Calculate decay
+        if decay_info["update_frequency"] == "daily":
+            decay = decay_info["confidence_decay"] * time_diff.days
+        elif decay_info["update_frequency"] == "monthly":
+            decay = decay_info["confidence_decay"] * (time_diff.days / 30)
+        else:  # rarely
+            decay = decay_info["confidence_decay"] * (time_diff.days / 365)
+        
+        current_confidence = max(0.1, original_confidence - decay)
+        return current_confidence
+    
+    def _check_for_conflicts(self, key: str) -> List[Dict[str, Any]]:
+        """Check for conflicting information about this key"""
+        # Simplified - would check across network in real implementation
+        conflicts = []
+        
+        # Check pending revisions for conflicts
+        for prop_id, proposal in self.pending_revisions.items():
+            if proposal["key"] == key and proposal["status"] == "disputed":
+                conflicts.append({
+                    "type": "pending_revision",
+                    "proposal_id": prop_id,
+                    "description": proposal["justification"]
+                })
+        
+        return conflicts
+    
+    def _assess_freshness(self, key: str, entry: Dict[str, Any]) -> Dict[str, Any]:
+        """Assess how fresh/current the knowledge is"""
+        
+        last_verified = datetime.fromisoformat(entry["last_verified"])
+        now = datetime.now()
+        age_days = (now - last_verified).days
+        
+        content_type = entry["metadata"].get("content_type", "evolving_knowledge")
+        expected_frequency = self.update_patterns[content_type]["update_frequency"]
+        
+        if expected_frequency == "daily" and age_days > 7:
+            freshness = "stale"
+        elif expected_frequency == "monthly" and age_days > 90:
+            freshness = "stale"
+        elif expected_frequency == "rarely" and age_days > 1825:  # 5 years
+            freshness = "stale"
+        else:
+            freshness = "fresh"
+        
+        return {
+            "status": freshness,
+            "age_days": age_days,
+            "expected_frequency": expected_frequency,
+            "needs_verification": freshness == "stale"
+        }
+    
+    def _identify_uncertainty_factors(self, key: str, entry: Dict[str, Any]) -> List[str]:
+        """Identify factors that increase uncertainty about this knowledge"""
+        
+        factors = []
+        
+        # Low validation score
+        if entry["validation_score"] < 0.6:
+            factors.append("low_validation_score")
+        
+        # Multiple revisions suggest uncertainty
+        if entry["revision_count"] > 3:
+            factors.append("frequently_revised")
+        
+        # Conflicts present
+        if self._check_for_conflicts(key):
+            factors.append("conflicting_information")
+        
+        # Stale information
+        freshness = self._assess_freshness(key, entry)
+        if freshness["status"] == "stale":
+            factors.append("outdated_information")
+        
+        # Single source
+        if len(entry["source_nodes"]) == 1:
+            factors.append("single_source")
+        
+        return factors
+    
+    def _check_consensus(self, proposal_id: str) -> Dict[str, Any]:
+        """Check if consensus has been reached on a proposal"""
+        
+        proposal = self.pending_revisions[proposal_id]
+        votes = proposal["votes"]
+        
+        total_votes = sum(len(vote_list) for vote_list in votes.values())
+        
+        if total_votes == 0:
+            return {"reached": False, "reason": "no_votes"}
+        
+        support_ratio = len(votes["support"]) / total_votes
+        oppose_ratio = len(votes["oppose"]) / total_votes
+        
+        threshold = self.conflict_resolution["version_conflicts"]["threshold"]
+        
+        if support_ratio >= threshold:
+            return {"reached": True, "action": "approve_revision"}
+        elif oppose_ratio >= threshold:
+            return {"reached": True, "action": "reject_revision"}
+        else:
+            return {"reached": False, "reason": "insufficient_consensus"}
+    
+    def _log_revision(self, key: str, old_entry: Dict, new_entry: Dict, revision_type: RevisionType):
+        """Log a revision for audit purposes"""
+        
+        revision_log = {
+            "key": key,
+            "revision_type": revision_type.value,
+            "old_version": old_entry.get("version", "unknown"),
+            "new_version": new_entry["version"],
+            "timestamp": new_entry["timestamp"],
+            "confidence_change": new_entry["confidence"] - old_entry.get("confidence", 0),
+            "source_node": self.node_id
+        }
+        
+        # Would log to persistent storage in real implementation
+        print(f"REVISION LOGGED: {revision_log}")
+    
+    def _notify_stakeholders(self, key: str, proposal_id: str):
+        """Notify relevant nodes about a revision proposal"""
+        # Would send notifications to peer nodes in real implementation
+        pass
+    
+    def _validate_peer_knowledge(self, peer_entry: Dict[str, Any]) -> bool:
+        """Validate knowledge received from peer node"""
+        
+        required_fields = ["content", "metadata", "timestamp", "confidence"]
+        
+        for field in required_fields:
+            if field not in peer_entry:
+                return False
+        
+        # Check confidence is reasonable
+        if not 0 <= peer_entry["confidence"] <= 1:
+            return False
+        
+        return True
+    
+    def _resolve_knowledge_conflict(self, key: str, peer_entry: Dict[str, Any]) -> Dict[str, Any]:
+        """Resolve conflict between local and peer knowledge"""
+        
+        local_entry = self.knowledge_store[key]
+        
+        # Compare validation scores
+        local_validation = local_entry["validation_score"]
+        peer_validation = peer_entry.get("validation_score", 0.5)
+        
+        # Compare timestamps
+        local_time = datetime.fromisoformat(local_entry["timestamp"])
+        peer_time = datetime.fromisoformat(peer_entry["timestamp"])
+        
+        # Simple resolution strategy
+        if peer_validation > local_validation + 0.1:
+            return {"action": "update_local", "reason": "higher_validation"}
+        elif peer_time > local_time and abs(peer_validation - local_validation) < 0.1:
+            return {"action": "update_local", "reason": "more_recent"}
+        elif local_entry["content"] != peer_entry["content"]:
+            return {"action": "conflict", "reason": "content_mismatch"}
+        else:
+            return {"action": "no_change", "reason": "equivalent"}
+    
+    def _flag_conflict(self, key: str, peer_node_id: str, peer_entry: Dict[str, Any]):
+        """Flag a conflict for manual resolution"""
+        # Would create conflict resolution process in real implementation
+        pass
+    
+    def _analyze_revision_patterns(self) -> Dict[str, Any]:
+        """Analyze patterns in knowledge revisions"""
+        
+        # Simplified analysis
+        revision_types = {}
+        recent_revisions = 0
+        
+        for history in self.revision_history.values():
+            recent_revisions += len([entry for entry in history 
+                                   if (datetime.now() - datetime.fromisoformat(entry["timestamp"])).days <= 30])
+        
+        return {
+            "recent_revisions_30_days": recent_revisions,
+            "average_revisions_per_item": sum(len(h) for h in self.revision_history.values()) / max(1, len(self.revision_history)),
+            "most_revised_topics": []  # Would implement full analysis
+        }
+    
+    def _analyze_confidence_distribution(self) -> Dict[str, float]:
+        """Analyze distribution of confidence levels"""
+        
+        if not self.knowledge_store:
+            return {"high": 0, "medium": 0, "low": 0}
+        
+        high_conf = sum(1 for entry in self.knowledge_store.values() if entry["confidence"] >= 0.8)
+        medium_conf = sum(1 for entry in self.knowledge_store.values() if 0.5 <= entry["confidence"] < 0.8)
+        low_conf = sum(1 for entry in self.knowledge_store.values() if entry["confidence"] < 0.5)
+        
+        total = len(self.knowledge_store)
+        
+        return {
+            "high_confidence": high_conf / total,
+            "medium_confidence": medium_conf / total,
+            "low_confidence": low_conf / total
+        }
+    
+    def _identify_disputed_topics(self) -> List[Dict[str, Any]]:
+        """Identify topics with the most disputes/revisions"""
+        
+        disputed = []
+        
+        for key, history in self.revision_history.items():
+            if len(history) > 2:  # More than original + 1 revision
+                disputed.append({
+                    "topic": key,
+                    "revision_count": len(history) - 1,
+                    "current_confidence": self.knowledge_store[key]["confidence"]
+                })
+        
+        return sorted(disputed, key=lambda x: x["revision_count"], reverse=True)[:5]
+    
+    def _analyze_knowledge_freshness(self) -> Dict[str, Any]:
+        """Analyze how fresh the knowledge base is"""
+        
+        if not self.knowledge_store:
+            return {"fresh": 0, "stale": 0, "very_stale": 0}
+        
+        now = datetime.now()
+        fresh = stale = very_stale = 0
+        
+        for entry in self.knowledge_store.values():
+            last_verified = datetime.fromisoformat(entry["last_verified"])
+            age_days = (now - last_verified).days
+            
+            if age_days <= 30:
+                fresh += 1
+            elif age_days <= 365:
+                stale += 1
+            else:
+                very_stale += 1
+        
+        total = len(self.knowledge_store)
+        
+        return {
+            "fresh_percent": fresh / total * 100,
+            "stale_percent": stale / total * 100,
+            "very_stale_percent": very_stale / total * 100
+        }
+    
+    def _assess_network_health(self) -> Dict[str, Any]:
+        """Assess overall health of the knowledge network"""
+        
+        confidence_dist = self._analyze_confidence_distribution()
+        freshness = self._analyze_knowledge_freshness()
+        
+        # Simple health score
+        health_score = (
+            confidence_dist["high_confidence"] * 0.4 +
+            confidence_dist["medium_confidence"] * 0.3 +
+            freshness["fresh_percent"] / 100 * 0.3
+        )
+        
+        return {
+            "overall_health_score": health_score,
+            "status": "healthy" if health_score > 0.7 else "needs_attention" if health_score > 0.4 else "poor",
+            "active_conflicts": len(self.pending_revisions),
+            "consensus_functioning": len([p for p in self.pending_revisions.values() if p["status"] == "pending"]) < 10
+        }
+    
+    def _generate_improvement_recommendations(self) -> List[str]:
+        """Generate recommendations for improving the knowledge network"""
+        
+        recommendations = []
+        
+        confidence_dist = self._analyze_confidence_distribution()
+        freshness = self._analyze_knowledge_freshness()
+        
+        if confidence_dist["low_confidence"] > 0.3:
+            recommendations.append("Review and improve validation for low-confidence knowledge")
+        
+        if freshness["very_stale_percent"] > 20:
+            recommendations.append("Implement automated freshness checking for critical knowledge")
+        
+        if len(self.pending_revisions) > 5:
+            recommendations.append("Speed up consensus process for pending revisions")
+        
+        return recommendations
+    
+    def get_node_status(self) -> Dict[str, Any]:
+        """Return current node status for network monitoring"""
+        
+        return {
+            "node_id": self.node_id,
+            "domain": self.domain,
+            "specialization": self.specialization,
+            "version": self.version,
+            "steward": self.steward,
+            "knowledge_entries": len(self.knowledge_store),
+            "revision_history_size": sum(len(h) for h in self.revision_history.values()),
+            "pending_revisions": len(self.pending_revisions),
+            "peer_connections": len(self.peer_connections),
+            "memory_capabilities": [
+                "knowledge_storage",
+                "revision_tracking", 
+                "consensus_building",
+                "conflict_resolution",
+                "network_synchronization",
+                "learning_analysis"
+            ],
+            "last_sync": self.last_global_sync,
+            "network_health": self._assess_network_health(),
+            "status": "active"
+        }
+
+# Demonstration of the memory and revision node
+def demonstrate_memory_revision():
+    """Demonstrate memory, revision, and network learning capabilities"""
+    
+    print("MEMORY & REVISION NODE DEMONSTRATION")
+    print("=" * 50)
+    
+    # Create the node
+    memory_node = MemoryRevisionNode()
+    
+    # Show node status
+    status = memory_node.get_node_status()
+    print(f"Node ID: {status['node_id']}")
+    print(f"Domain: {status['domain']}")
+    print(f"Memory Capabilities: {', '.join(status['memory_capabilities'])}")
+    print()
+    
+    # Store some initial knowledge
+    print("STORING INITIAL KNOWLEDGE:")
+    print("-" * 30)
+    
+    knowledge_items = [
+        {
+            "key": "python_best_practices",
+            "content": "Use descriptive variable names and follow PEP 8 style guide",
+            "metadata": {
+                "source_type": "expert_consensus",
+                "evidence_type": "observational_data",
+                "content_type": "evolving_knowledge",
+                "confidence": 0.8
+            }
+        },
+        {
+            "key": "earth_age",
+            "content": "Earth is approximately 4.54 billion years old",
+            "metadata": {
+                "source_type": "peer_reviewed",
+                "evidence_type": "direct_measurement",
+                "content_type": "stable_facts",
+                "confidence": 0.95
+            }
+        },
+        {
+            "key": "current_ai_trends",
+            "content": "Large language models are rapidly advancing in 2024",
+            "metadata": {
+                "source_type": "community_verified",
+                "evidence_type": "observational_data", 
+                "content_type": "rapidly_changing",
+                "confidence": 0.7
+            }
+        }
+    ]
+    
+    for item in knowledge_items:
+        version_hash = memory_node.store_knowledge(item["key"], item["content"], item["metadata"])
+        print(f"Stored: {item['key']} (version: {version_hash})")
+    
+    print()
+    
+    # Demonstrate revision proposal
+    print("PROPOSING KNOWLEDGE REVISION:")
+    print("-" * 35)
+    
+    proposal_id = memory_node.propose_revision(
+        key="python_best_practices",
+        new_content="Use descriptive variable names, follow PEP 8, and include type hints",
+        revision_type=RevisionType.EXPANSION,
+        justification="Type hints are now considered best practice in modern Python",
+        proposer_id="expert_pythonista_001"
+    )
+    
+    print(f"Proposed revision: {proposal_id}")
+    
+    # Demonstrate voting
+    print("\nVOTING ON REVISION:")
+    print("-" * 20)
+    
+    vote_result = memory_node.vote_on_revision(
+        proposal_id, 
+        "python_expert_002", 
+        "support",
+        "Type hints significantly improve code maintainability"
+    )
+    
+    print(f"Vote result: {vote_result}")
+    
+    # Add more votes to reach consensus
+    memory_node.vote_on_revision(proposal_id, "python_expert_003", "support")
+    memory_node.vote_on_revision(proposal_id, "python_expert_004", "support")
+    
+    final_vote = memory_node.vote_on_revision(proposal_id, "python_expert_005", "support")
+    print(f"Final vote result: {final_vote}")
+    
+    print()
+    
+    # Demonstrate knowledge retrieval with confidence
+    print("RETRIEVING KNOWLEDGE WITH CONFIDENCE:")
+    print("-" * 42)
+    
+    for key in ["python_best_practices", "earth_age", "current_ai_trends"]:
+        knowledge = memory_node.get_knowledge_with_confidence(key)
+        print(f"\nKnowledge: {key}")
+        print(f"Content: {knowledge['content']}")
+        print(f"Confidence: {knowledge['confidence']:.2f}")
+        print(f"Freshness: {knowledge['freshness']['status']}")
+        if knowledge['uncertainty_factors']:
+            print(f"Uncertainty factors: {knowledge['uncertainty_factors']}")
+    
+    print()
+    
+    # Generate learning report
+    print("NETWORK LEARNING
