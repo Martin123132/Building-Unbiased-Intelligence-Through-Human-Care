@@ -1,0 +1,557 @@
+"""
+BASIC HUMOR & CULTURAL UNDERSTANDING NODE - Foundational Example
+P2P AI Stewardship Project
+Domain: Humor, Irony, Cultural References, and Human Communication Nuance
+"""
+
+import json
+import time
+import re
+from typing import Dict, List, Any, Optional
+
+class HumorCulturalNode:
+    """
+    Basic humor and cultural understanding node.
+    Handles irony, sarcasm, jokes, cultural references, and communication nuance.
+    Essential for understanding how humans actually communicate.
+    """
+    
+    def __init__(self, node_id: str = "humor_cultural_001"):
+        self.node_id = node_id
+        self.domain = "humor_cultural"
+        self.specialization = "irony_wordplay_references"
+        self.version = "1.0.0"
+        self.steward = "community_contributor"
+        
+        # Core humor and cultural knowledge
+        self.knowledge_base = {
+            "irony_types": {
+                "verbal_irony": {
+                    "definition": "Saying one thing but meaning the opposite",
+                    "examples": [
+                        {"statement": "What a beautiful day!", "context": "during a thunderstorm", "meaning": "terrible weather"},
+                        {"statement": "Great job on that presentation", "context": "after someone fumbled badly", "meaning": "poor performance"},
+                        {"statement": "I love waiting in line", "context": "stuck in traffic", "meaning": "frustrated with delay"}
+                    ],
+                    "certainty": 0.9
+                },
+                "situational_irony": {
+                    "definition": "When outcome is opposite of what's expected",
+                    "examples": [
+                        "Fire station burns down",
+                        "Marriage counselor gets divorced", 
+                        "Security expert gets hacked"
+                    ],
+                    "certainty": 0.85
+                },
+                "dramatic_irony": {
+                    "definition": "Audience knows something characters don't",
+                    "examples": [
+                        "Romeo thinks Juliet is dead but audience knows she's sleeping",
+                        "Horror movie: audience sees killer but character doesn't"
+                    ],
+                    "certainty": 0.9
+                }
+            },
+            
+            "sarcasm_patterns": {
+                "definition": "Sharp, often cutting ironic remarks",
+                "indicators": [
+                    "exaggerated emphasis",
+                    "obvious overstatement", 
+                    "context mismatch",
+                    "tone clues (in speech)"
+                ],
+                "examples": [
+                    {"text": "Oh fantastic, another meeting", "intent": "expressing annoyance"},
+                    {"text": "Sure, because that worked so well last time", "intent": "skepticism about repeated mistake"},
+                    {"text": "Brilliant idea, Einstein", "intent": "mocking poor suggestion"}
+                ],
+                "cultural_note": "Heavily dependent on context and relationship",
+                "certainty": 0.8
+            },
+            
+            "wordplay_puns": {
+                "definition": "Humor based on multiple meanings or similar sounds",
+                "types": {
+                    "homophone": "Same sound, different meaning (pair/pear)",
+                    "homonym": "Same spelling, different meaning (bank/bank)",
+                    "spoonerism": "Swapping sounds (cat flap → flat cap)"
+                },
+                "examples": [
+                    {"setup": "I wondered why the baseball was getting bigger", "punchline": "Then it hit me", "mechanism": "literal vs figurative 'hit'"},
+                    {"setup": "Time flies like an arrow", "punchline": "Fruit flies like a banana", "mechanism": "grammar ambiguity"},
+                    {"setup": "I used to hate facial hair", "punchline": "But then it grew on me", "mechanism": "literal vs figurative growth"}
+                ],
+                "certainty": 0.85
+            },
+            
+            "cultural_references": {
+                "pop_culture": {
+                    "breaking_bad": "Cooking meth = danger/illegal activity reference",
+                    "404_error": "Something not found (from web error codes)",
+                    "red_pill_blue_pill": "Choice between harsh truth vs comfortable illusion (Matrix)",
+                    "winter_is_coming": "Warning of approaching difficulties (Game of Thrones)"
+                },
+                "historical": {
+                    "crossing_rubicon": "Point of no return (Julius Caesar)",
+                    "trojan_horse": "Hidden danger/deception (Troy)",
+                    "achilles_heel": "Fatal weakness (Greek mythology)"
+                },
+                "internet_culture": {
+                    "rickroll": "Trick link leading to Rick Astley song",
+                    "troll": "Deliberately provocative online behavior",
+                    "meme": "Viral cultural reference/joke format"
+                },
+                "certainty": 0.7,  # Cultural references change and vary by group
+                "note": "Highly dependent on shared cultural knowledge"
+            },
+            
+            "humor_mechanisms": {
+                "incongruity": "Unexpected combination or outcome",
+                "superiority": "Feeling superior to subject of humor", 
+                "relief": "Release of tension through humor",
+                "examples": {
+                    "incongruity": "Why don't scientists trust atoms? Because they make up everything!",
+                    "timing": "Comedic timing creates surprise and emphasis",
+                    "exaggeration": "Hyperbole for humorous effect"
+                },
+                "certainty": 0.75
+            }
+        }
+        
+        # Areas requiring deeper cultural knowledge
+        self.knowledge_gaps = {
+            "regional_humor": "Local jokes, dialect humor, regional references",
+            "generational_humor": "Humor specific to age groups, era-specific references",
+            "professional_humor": "Industry-specific jokes, occupational humor",
+            "multilingual_humor": "Cross-language puns, translation humor",
+            "advanced_comedy": "Stand-up techniques, comedic writing, timing",
+            "cultural_sensitivity": "What's funny vs offensive across cultures"
+        }
+        
+        # Cross-domain connections
+        self.peer_connections = []
+        self.last_update = time.time()
+        
+    def query(self, question: str) -> Dict[str, Any]:
+        """
+        Answer questions about humor, irony, and cultural communication.
+        Focus on helping understand human communication nuance.
+        """
+        
+        question_lower = question.lower()
+        
+        # Irony detection and explanation
+        if any(term in question_lower for term in ["irony", "ironic", "sarcasm", "sarcastic"]):
+            return self._respond_irony(question)
+        
+        # Wordplay and puns
+        elif any(term in question_lower for term in ["pun", "wordplay", "joke", "funny"]):
+            return self._respond_wordplay(question)
+        
+        # Cultural references
+        elif any(term in question_lower for term in ["reference", "meme", "pop culture", "cultural"]):
+            return self._respond_cultural(question)
+        
+        # Communication interpretation
+        elif any(term in question_lower for term in ["mean", "interpret", "understand", "communication"]):
+            return self._interpret_communication(question)
+        
+        # Humor analysis
+        elif "analyze" in question_lower or "explain" in question_lower:
+            return self._analyze_humor(question)
+        
+        # Unknown area
+        else:
+            return self._respond_unknown(question)
+    
+    def _respond_irony(self, question: str) -> Dict[str, Any]:
+        """Respond to irony and sarcasm questions"""
+        
+        if "sarcasm" in question.lower():
+            knowledge = self.knowledge_base["sarcasm_patterns"]
+            
+            return {
+                "answer": f"Sarcasm: {knowledge['definition']}",
+                "indicators": knowledge["indicators"],
+                "examples": [f"'{ex['text']}' → {ex['intent']}" for ex in knowledge["examples"][:2]],
+                "certainty": knowledge["certainty"],
+                "cultural_note": knowledge["cultural_note"],
+                "source_node": self.node_id,
+                "domain": self.domain,
+                "important": "Heavily context-dependent - same words can be sincere or sarcastic"
+            }
+        
+        else:  # General irony
+            irony_types = self.knowledge_base["irony_types"]
+            
+            return {
+                "answer": "Irony involves contrast between expectation and reality",
+                "types": {
+                    "verbal": irony_types["verbal_irony"]["definition"],
+                    "situational": irony_types["situational_irony"]["definition"], 
+                    "dramatic": irony_types["dramatic_irony"]["definition"]
+                },
+                "examples": irony_types["verbal_irony"]["examples"][:2],
+                "certainty": 0.9,
+                "source_node": self.node_id,
+                "domain": self.domain
+            }
+    
+    def _respond_wordplay(self, question: str) -> Dict[str, Any]:
+        """Respond to wordplay and pun questions"""
+        
+        knowledge = self.knowledge_base["wordplay_puns"]
+        
+        return {
+            "answer": f"Wordplay: {knowledge['definition']}",
+            "types": knowledge["types"],
+            "examples": [f"'{ex['setup']} {ex['punchline']}' → {ex['mechanism']}" 
+                        for ex in knowledge["examples"][:2]],
+            "certainty": knowledge["certainty"],
+            "source_node": self.node_id,
+            "domain": self.domain,
+            "note": "Puns often considered 'dad jokes' - simple wordplay humor"
+        }
+    
+    def _respond_cultural(self, question: str) -> Dict[str, Any]:
+        """Respond to cultural reference questions"""
+        
+        cultural_refs = self.knowledge_base["cultural_references"]
+        
+        # Check for specific references in question
+        found_ref = None
+        for category in cultural_refs:
+            if category == "certainty" or category == "note":
+                continue
+            for ref, meaning in cultural_refs[category].items():
+                if ref.replace("_", " ") in question.lower():
+                    found_ref = (ref, meaning, category)
+                    break
+        
+        if found_ref:
+            ref, meaning, category = found_ref
+            return {
+                "answer": f"'{ref.replace('_', ' ')}' reference: {meaning}",
+                "category": category,
+                "certainty": cultural_refs["certainty"],
+                "source_node": self.node_id,
+                "domain": self.domain,
+                "note": cultural_refs["note"]
+            }
+        
+        return {
+            "answer": "Cultural references rely on shared knowledge and context",
+            "categories": {
+                "pop_culture": "Movies, TV, internet phenomena",
+                "historical": "Historical events and figures",
+                "internet_culture": "Online behaviors and memes"
+            },
+            "examples": list(cultural_refs["pop_culture"].keys())[:3],
+            "certainty": cultural_refs["certainty"],
+            "source_node": self.node_id,
+            "domain": self.domain,
+            "important": cultural_refs["note"]
+        }
+    
+    def _interpret_communication(self, question: str) -> Dict[str, Any]:
+        """Help interpret potentially ironic or humorous communication"""
+        
+        # Extract text to interpret
+        text_to_interpret = self._extract_text_from_question(question)
+        
+        if text_to_interpret:
+            interpretation = self._analyze_text_for_humor_irony(text_to_interpret)
+            return {
+                "text": text_to_interpret,
+                "interpretation": interpretation,
+                "certainty": 0.6,  # Context-dependent interpretation
+                "source_node": self.node_id,
+                "domain": self.domain,
+                "caveat": "Interpretation depends heavily on context, tone, and relationship"
+            }
+        
+        return {
+            "answer": "Provide the specific text you'd like me to interpret",
+            "capabilities": ["irony detection", "sarcasm analysis", "cultural reference identification"],
+            "limitations": ["tone of voice", "personal relationships", "full context"],
+            "source_node": self.node_id,
+            "domain": self.domain
+        }
+    
+    def _analyze_humor(self, question: str) -> Dict[str, Any]:
+        """Analyze humor in provided text"""
+        
+        text_to_analyze = self._extract_text_from_question(question)
+        
+        if text_to_analyze:
+            analysis = self._comprehensive_humor_analysis(text_to_analyze)
+            return analysis
+        
+        return {
+            "answer": "Please provide the text or joke you'd like me to analyze",
+            "analysis_types": ["wordplay detection", "irony identification", "cultural reference explanation"],
+            "humor_mechanisms": list(self.knowledge_base["humor_mechanisms"].keys())[:-2],  # Exclude examples and certainty
+            "source_node": self.node_id,
+            "domain": self.domain
+        }
+    
+    def _extract_text_from_question(self, question: str) -> Optional[str]:
+        """Extract text to analyze from question"""
+        
+        # Look for quoted text
+        quote_patterns = [
+            r'"([^"]+)"',
+            r"'([^']+)'",
+            r'«([^»]+)»'
+        ]
+        
+        for pattern in quote_patterns:
+            match = re.search(pattern, question)
+            if match:
+                return match.group(1)
+        
+        # Look for text after keywords
+        keyword_patterns = [
+            r'analyze\s+(.+)',
+            r'interpret\s+(.+)',
+            r'explain\s+(.+)',
+            r'understand\s+(.+)'
+        ]
+        
+        for pattern in keyword_patterns:
+            match = re.search(pattern, question.lower())
+            if match:
+                return match.group(1).strip()
+        
+        return None
+    
+    def _analyze_text_for_humor_irony(self, text: str) -> Dict[str, Any]:
+        """Analyze text for humor and irony patterns"""
+        
+        analysis = {"text": text}
+        
+        # Check for sarcasm indicators
+        sarcasm_indicators = self.knowledge_base["sarcasm_patterns"]["indicators"]
+        found_indicators = []
+        
+        if any(word in text.lower() for word in ["oh great", "fantastic", "wonderful", "perfect"]):
+            found_indicators.append("potentially sarcastic positive words")
+        
+        if "..." in text or "sure" in text.lower() or "right" in text.lower():
+            found_indicators.append("skeptical language patterns")
+        
+        if found_indicators:
+            analysis["possible_sarcasm"] = {
+                "indicators_found": found_indicators,
+                "likelihood": "moderate to high",
+                "note": "Context and tone crucial for confirmation"
+            }
+        
+        # Check for wordplay
+        words = text.lower().split()
+        potential_puns = []
+        
+        # Simple double-meaning check
+        double_meaning_words = ["bank", "bark", "bat", "bear", "bow", "fair", "fly", "lie", "match", "rock", "run", "saw", "tire"]
+        for word in words:
+            if word in double_meaning_words:
+                potential_puns.append(word)
+        
+        if potential_puns:
+            analysis["possible_wordplay"] = {
+                "words": potential_puns,
+                "note": "These words have multiple meanings - could be intentional wordplay"
+            }
+        
+        # Check for cultural references
+        cultural_refs = self.knowledge_base["cultural_references"]
+        found_refs = []
+        
+        for category in cultural_refs:
+            if category in ["certainty", "note"]:
+                continue
+            for ref in cultural_refs[category]:
+                if ref.replace("_", " ") in text.lower():
+                    found_refs.append((ref, category))
+        
+        if found_refs:
+            analysis["cultural_references"] = found_refs
+        
+        return analysis
+    
+    def _comprehensive_humor_analysis(self, text: str) -> Dict[str, Any]:
+        """Comprehensive analysis of humor in text"""
+        
+        humor_analysis = self._analyze_text_for_humor_irony(text)
+        
+        # Add humor mechanism analysis
+        mechanisms = self.knowledge_base["humor_mechanisms"]
+        
+        humor_analysis["humor_mechanisms"] = {
+            "incongruity": "Look for unexpected combinations or outcomes",
+            "wordplay": "Check for puns, double meanings, sound similarities",
+            "timing": "Consider setup and punchline structure"
+        }
+        
+        humor_analysis["source_node"] = self.node_id
+        humor_analysis["domain"] = self.domain
+        humor_analysis["certainty"] = 0.7
+        humor_analysis["note"] = "Humor analysis requires cultural context and subjective interpretation"
+        
+        return humor_analysis
+    
+    def _respond_unknown(self, question: str) -> Dict[str, Any]:
+        """Respond when question is outside knowledge base"""
+        
+        # Identify potential knowledge gap
+        potential_domain = "unknown"
+        for gap_domain in self.knowledge_gaps.keys():
+            if any(term in question.lower() for term in gap_domain.split("_")):
+                potential_domain = gap_domain
+                break
+        
+        return {
+            "answer": "This requires cultural or humor knowledge beyond my current scope.",
+            "certainty": 0.0,
+            "knowledge_gap": potential_domain,
+            "gap_description": self.knowledge_gaps.get(potential_domain, "Advanced cultural area"),
+            "suggestion": f"This might require a node specializing in {potential_domain}",
+            "available_areas": list(self.knowledge_base.keys()),
+            "source_node": self.node_id,
+            "can_help_with": "Basic irony, wordplay, common cultural references, communication interpretation"
+        }
+    
+    def verify_humor_claim(self, claim: str) -> Dict[str, Any]:
+        """Verify claims about humor and cultural understanding"""
+        
+        claim_lower = claim.lower()
+        
+        # Check irony definitions
+        if "irony" in claim_lower and "opposite" in claim_lower:
+            return {
+                "verified": True,
+                "explanation": "Correct: irony often involves saying the opposite of what you mean",
+                "certainty": 0.9,
+                "source_node": self.node_id
+            }
+        
+        # Check cultural reference claims
+        cultural_refs = self.knowledge_base["cultural_references"]
+        for category in cultural_refs:
+            if category in ["certainty", "note"]:
+                continue
+            for ref, meaning in cultural_refs[category].items():
+                if ref.replace("_", " ") in claim_lower:
+                    if any(word in claim_lower for word in meaning.lower().split()):
+                        return {
+                            "verified": True,
+                            "explanation": f"Correct: '{ref}' does relate to {meaning}",
+                            "certainty": 0.8,
+                            "source_node": self.node_id
+                        }
+        
+        return {
+            "verified": None,
+            "explanation": "Cannot verify this humor/cultural claim with current knowledge",
+            "certainty": 0.0,
+            "source_node": self.node_id
+        }
+    
+    def get_node_status(self) -> Dict[str, Any]:
+        """Return current node status for network monitoring"""
+        
+        return {
+            "node_id": self.node_id,
+            "domain": self.domain,
+            "specialization": self.specialization,
+            "version": self.version,
+            "steward": self.steward,
+            "knowledge_areas": list(self.knowledge_base.keys()),
+            "knowledge_gaps": list(self.knowledge_gaps.keys()),
+            "humor_capabilities": ["irony_detection", "sarcasm_analysis", "wordplay_recognition", "cultural_reference_explanation"],
+            "last_update": self.last_update,
+            "peer_connections": len(self.peer_connections),
+            "status": "active"
+        }
+    
+    def connect_to_peer(self, peer_info: Dict[str, str]):
+        """Connect to another node in the P2P network"""
+        
+        self.peer_connections.append({
+            "node_id": peer_info["node_id"],
+            "domain": peer_info["domain"],
+            "connection_time": time.time()
+        })
+
+# Demonstration of the humor/cultural node
+def demonstrate_humor_node():
+    """Demonstrate the basic humor and cultural understanding node"""
+    
+    print("HUMOR & CULTURAL UNDERSTANDING NODE DEMONSTRATION")
+    print("=" * 55)
+    
+    # Create the node
+    humor_node = HumorCulturalNode()
+    
+    # Show node status
+    status = humor_node.get_node_status()
+    print(f"Node ID: {status['node_id']}")
+    print(f"Domain: {status['domain']}")
+    print(f"Specialization: {status['specialization']}")
+    print(f"Knowledge Areas: {', '.join(status['knowledge_areas'])}")
+    print(f"Humor Capabilities: {', '.join(status['humor_capabilities'])}")
+    print()
+    
+    # Test queries
+    test_questions = [
+        "What is irony?",
+        "How can I tell if someone is being sarcastic?",
+        "Explain this joke: 'Time flies like an arrow, fruit flies like a banana'",
+        "What does 'winter is coming' mean as a reference?",
+        'Interpret: "Oh great, another meeting about meetings"',
+        "How does regional humor work?"  # Should show knowledge gap
+    ]
+    
+    print("TESTING HUMOR & CULTURAL QUERIES:")
+    print("-" * 40)
+    
+    for question in test_questions:
+        print(f"\nQ: {question}")
+        response = humor_node.query(question)
+        
+        print(f"A: {response['answer']}")
+        if 'certainty' in response:
+            print(f"Certainty: {response['certainty']}")
+        if 'knowledge_gap' in response:
+            print(f"Knowledge Gap: {response['knowledge_gap']}")
+        if 'examples' in response and response['examples']:
+            print(f"Examples: {response['examples'][:2]}")
+    
+    print(f"\n" + "=" * 55)
+    print("COMMUNICATION INTERPRETATION TESTING:")
+    print("-" * 45)
+    
+    # Test interpretation capabilities
+    test_texts = [
+        '"Sure, because that worked so well last time"',
+        '"What a beautiful day!" (during thunderstorm)',
+        '"I love waiting in line"'
+    ]
+    
+    for text in test_texts:
+        print(f"\nText: {text}")
+        analysis = humor_node._analyze_text_for_humor_irony(text.strip('"'))
+        print(f"Analysis: {analysis}")
+    
+    print(f"\n" + "=" * 55)
+    print("NODE FEATURES DEMONSTRATED:")
+    print("✓ Irony and sarcasm detection with context awareness")
+    print("✓ Wordplay and pun explanation mechanisms")
+    print("✓ Cultural reference interpretation")
+    print("✓ Communication nuance analysis")
+    print("✓ Cross-cultural sensitivity and knowledge gaps")
+
+if __name__ == "__main__":
+    demonstrate_humor_node()
