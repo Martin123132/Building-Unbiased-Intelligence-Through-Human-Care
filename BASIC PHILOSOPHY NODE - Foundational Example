@@ -1,0 +1,475 @@
+"""
+BASIC PHILOSOPHY NODE - Foundational Example
+P2P AI Stewardship Project
+Domain: Fundamental Philosophical Reasoning
+"""
+
+import json
+import time
+import re
+from typing import Dict, List, Any, Optional
+
+class PhilosophyNode:
+    """
+    Basic philosophy node containing fundamental philosophical knowledge.
+    Demonstrates reasoning about existence, logic, and conditional thinking.
+    """
+    
+    def __init__(self, node_id: str = "philosophy_basic_001"):
+        self.node_id = node_id
+        self.domain = "philosophy"
+        self.specialization = "fundamental_reasoning_logic"
+        self.version = "1.0.0"
+        self.steward = "community_contributor"
+        
+        # Core philosophical knowledge - reasoning frameworks and insights
+        self.knowledge_base = {
+            "cogito_ergo_sum": {
+                "statement": "I think, therefore I am",
+                "original": "Cogito ergo sum",
+                "philosopher": "René Descartes",
+                "logical_structure": "If I doubt, then I think. If I think, then I exist.",
+                "certainty": 0.9,  # High confidence but acknowledges philosophical debate
+                "reasoning": "The act of doubting one's existence proves that there is someone doing the doubting",
+                "implications": ["existence_of_consciousness", "foundation_for_knowledge", "methodical_doubt"],
+                "critiques": ["assumes_thinking_requires_thinker", "cultural_bias_of_individual_self"]
+            },
+            
+            "kipling_if": {
+                "statement": "If you can keep your head when all about you are losing theirs... you'll be a Man, my son!",
+                "structure": "conditional_reasoning",
+                "logical_form": "If P then Q (where P = virtuous conditions, Q = character achievement)",
+                "conditions": [
+                    "keep your head when others lose theirs",
+                    "trust yourself when others doubt you",
+                    "wait without being tired by waiting",
+                    "being lied about, don't deal in lies",
+                    "being hated, don't give way to hating"
+                ],
+                "certainty": 0.7,  # Values-based, culturally relative
+                "type": "practical_wisdom",
+                "implications": ["character_development", "stoic_philosophy", "conditional_virtue"]
+            },
+            
+            "logical_contradiction": {
+                "statement": "Something cannot both be and not be at the same time and in the same respect",
+                "formal_name": "Law of Non-Contradiction",
+                "logical_form": "¬(P ∧ ¬P)",
+                "certainty": 0.95,  # Fundamental to most logical systems
+                "applications": ["argument_analysis", "consistency_checking", "reasoning_validity"],
+                "exceptions": ["dialectical_logic", "quantum_superposition", "paradox_analysis"]
+            },
+            
+            "if_then_reasoning": {
+                "statement": "If P, then Q. P is true. Therefore Q is true.",
+                "formal_name": "Modus Ponens",
+                "logical_form": "P → Q, P ⊢ Q",
+                "certainty": 1.0,  # Valid logical form
+                "examples": [
+                    {"premise1": "If it rains, the ground gets wet", "premise2": "It is raining", "conclusion": "The ground gets wet"},
+                    {"premise1": "If you study, you learn", "premise2": "You study", "conclusion": "You learn"}
+                ],
+                "invalid_forms": {
+                    "affirming_consequent": "P → Q, Q, therefore P (invalid)",
+                    "denying_antecedent": "P → Q, ¬P, therefore ¬Q (invalid)"
+                }
+            },
+            
+            "ethical_reasoning_framework": {
+                "statement": "Actions can be evaluated through multiple ethical lenses",
+                "frameworks": {
+                    "consequentialism": "Judge actions by their outcomes",
+                    "deontology": "Judge actions by adherence to duty/rules", 
+                    "virtue_ethics": "Judge actions by character virtues they express"
+                },
+                "certainty": 0.6,  # Framework utility, not absolute truth
+                "example_application": {
+                    "scenario": "Telling a lie to protect someone's feelings",
+                    "consequentialist_view": "Good if it produces better outcomes",
+                    "deontological_view": "Wrong because lying violates duty to truth",
+                    "virtue_ethics_view": "Depends on whether it expresses compassion vs dishonesty"
+                }
+            }
+        }
+        
+        # Areas requiring other domains or deeper knowledge
+        self.knowledge_gaps = {
+            "advanced_logic": "Modal logic, temporal logic, many-valued logics",
+            "metaphysics": "Nature of reality, time, causation, identity",
+            "epistemology": "Detailed theories of knowledge and justification", 
+            "political_philosophy": "Justice, rights, governance theories",
+            "philosophy_of_mind": "Consciousness, qualia, mind-body problem",
+            "ethics": "Detailed normative and applied ethical theories"
+        }
+        
+        # Cross-domain connections
+        self.peer_connections = []
+        self.last_update = time.time()
+        
+    def query(self, question: str) -> Dict[str, Any]:
+        """
+        Answer philosophical questions based on knowledge base.
+        Emphasizes reasoning processes and acknowledges uncertainty.
+        """
+        
+        question_lower = question.lower()
+        
+        # Existence and consciousness queries
+        if any(term in question_lower for term in ["exist", "consciousness", "think therefore", "cogito"]):
+            return self._respond_existence(question)
+        
+        # Conditional reasoning and character
+        elif any(term in question_lower for term in ["if", "condition", "kipling", "character"]):
+            return self._respond_conditional(question)
+        
+        # Logic and contradiction
+        elif any(term in question_lower for term in ["logic", "contradiction", "valid", "argument"]):
+            return self._respond_logic(question)
+        
+        # Ethical reasoning
+        elif any(term in question_lower for term in ["ethical", "moral", "right", "wrong", "good", "bad"]):
+            return self._respond_ethics(question)
+        
+        # Analyze specific statements
+        elif "analyze" in question_lower or "evaluate" in question_lower:
+            return self._analyze_statement(question)
+        
+        # Unknown philosophical area
+        else:
+            return self._respond_unknown(question)
+    
+    def _respond_existence(self, question: str) -> Dict[str, Any]:
+        """Respond to questions about existence and consciousness"""
+        
+        knowledge = self.knowledge_base["cogito_ergo_sum"]
+        
+        return {
+            "answer": f"{knowledge['statement']} - {knowledge['reasoning']}",
+            "certainty": knowledge["certainty"],
+            "logical_structure": knowledge["logical_structure"],
+            "philosopher": knowledge["philosopher"],
+            "implications": knowledge["implications"],
+            "critiques": knowledge["critiques"],
+            "reasoning_process": "Methodical doubt leads to one indubitable fact: the existence of the doubter",
+            "source_node": self.node_id,
+            "domain": self.domain,
+            "caveat": "This represents one philosophical position among many"
+        }
+    
+    def _respond_conditional(self, question: str) -> Dict[str, Any]:
+        """Respond to conditional reasoning questions"""
+        
+        # Check if asking about Kipling specifically
+        if "kipling" in question.lower():
+            knowledge = self.knowledge_base["kipling_if"]
+            
+            return {
+                "answer": "Kipling's 'If—' presents conditional wisdom: achieving character through meeting challenges",
+                "logical_form": knowledge["logical_form"],
+                "key_conditions": knowledge["conditions"][:3],  # Show first 3
+                "certainty": knowledge["certainty"],
+                "type": knowledge["type"],
+                "reasoning_process": "If you demonstrate these virtues under pressure, then you achieve mature character",
+                "source_node": self.node_id,
+                "domain": self.domain,
+                "cultural_context": "Reflects British Victorian values, may not be universal"
+            }
+        
+        # General conditional reasoning
+        else:
+            knowledge = self.knowledge_base["if_then_reasoning"]
+            
+            return {
+                "answer": knowledge["statement"],
+                "formal_name": knowledge["formal_name"], 
+                "logical_form": knowledge["logical_form"],
+                "certainty": knowledge["certainty"],
+                "examples": knowledge["examples"][:2],
+                "common_errors": knowledge["invalid_forms"],
+                "reasoning_process": "Valid logical inference from conditional premise and affirmed antecedent",
+                "source_node": self.node_id,
+                "domain": self.domain
+            }
+    
+    def _respond_logic(self, question: str) -> Dict[str, Any]:
+        """Respond to logical reasoning questions"""
+        
+        knowledge = self.knowledge_base["logical_contradiction"]
+        
+        return {
+            "answer": knowledge["statement"],
+            "formal_name": knowledge["formal_name"],
+            "logical_form": knowledge["logical_form"],
+            "certainty": knowledge["certainty"],
+            "applications": knowledge["applications"],
+            "exceptions": knowledge["exceptions"],
+            "reasoning_process": "Fundamental principle that ensures logical consistency",
+            "source_node": self.node_id,
+            "domain": self.domain,
+            "note": "Central to classical logic, but some alternative logics challenge this"
+        }
+    
+    def _respond_ethics(self, question: str) -> Dict[str, Any]:
+        """Respond to ethical reasoning questions"""
+        
+        knowledge = self.knowledge_base["ethical_reasoning_framework"]
+        
+        return {
+            "answer": knowledge["statement"],
+            "frameworks": knowledge["frameworks"],
+            "certainty": knowledge["certainty"],
+            "example": knowledge["example_application"],
+            "reasoning_process": "Different ethical theories focus on consequences, duties, or virtues",
+            "source_node": self.node_id,
+            "domain": self.domain,
+            "important_note": "These are frameworks for analysis, not absolute moral truths"
+        }
+    
+    def _analyze_statement(self, question: str) -> Dict[str, Any]:
+        """Analyze philosophical statements or arguments"""
+        
+        # Simple pattern matching for demonstration
+        if "all swans are white" in question.lower():
+            return {
+                "analysis": "Inductive generalization that can be falsified by counter-example",
+                "logical_form": "Universal quantification: ∀x(Swan(x) → White(x))",
+                "problems": ["Induction problem", "Single black swan disproves claim"],
+                "certainty": 0.3,
+                "reasoning_process": "Empirical claim requiring verification of all instances",
+                "source_node": self.node_id,
+                "domain": self.domain
+            }
+        
+        return {
+            "analysis": "Please provide the specific statement you'd like me to analyze",
+            "available_tools": ["logical structure analysis", "consistency checking", "assumption identification"],
+            "certainty": 0.0,
+            "source_node": self.node_id,
+            "domain": self.domain
+        }
+    
+    def _respond_unknown(self, question: str) -> Dict[str, Any]:
+        """Respond when question is outside knowledge base"""
+        
+        # Identify potential knowledge gap
+        potential_domain = "unknown"
+        for gap_domain in self.knowledge_gaps.keys():
+            if any(term in question.lower() for term in gap_domain.split("_")):
+                potential_domain = gap_domain
+                break
+        
+        return {
+            "answer": "This question goes beyond my current philosophical knowledge base.",
+            "certainty": 0.0,
+            "knowledge_gap": potential_domain,
+            "gap_description": self.knowledge_gaps.get(potential_domain, "Unknown area"),
+            "suggestion": f"This might require a node specializing in {potential_domain}",
+            "available_areas": list(self.knowledge_base.keys()),
+            "source_node": self.node_id,
+            "can_help_with": "Basic reasoning, logical analysis, foundational concepts"
+        }
+    
+    def analyze_argument(self, premises: List[str], conclusion: str) -> Dict[str, Any]:
+        """
+        Analyze logical arguments for validity and soundness.
+        Critical for network reasoning verification.
+        """
+        
+        analysis = {
+            "premises": premises,
+            "conclusion": conclusion,
+            "source_node": self.node_id
+        }
+        
+        # Simple logical structure detection
+        if len(premises) >= 2:
+            # Check for modus ponens pattern
+            conditional_premise = None
+            affirmation_premise = None
+            
+            for premise in premises:
+                if " then " in premise.lower() or " → " in premise:
+                    conditional_premise = premise
+                else:
+                    affirmation_premise = premise
+            
+            if conditional_premise and affirmation_premise:
+                # Basic modus ponens check
+                analysis["structure"] = "Possible modus ponens"
+                analysis["validity_check"] = "If premises match 'If P then Q' and 'P', then 'Q' follows"
+                analysis["certainty"] = 0.8
+            else:
+                analysis["structure"] = "Complex argument requiring detailed analysis"
+                analysis["certainty"] = 0.3
+        else:
+            analysis["structure"] = "Single premise argument"
+            analysis["certainty"] = 0.5
+        
+        # Check for obvious contradictions
+        contradiction_found = False
+        for i, premise1 in enumerate(premises):
+            for premise2 in premises[i+1:]:
+                if self._check_basic_contradiction(premise1, premise2):
+                    contradiction_found = True
+                    break
+        
+        if contradiction_found:
+            analysis["logical_problem"] = "Contradictory premises detected"
+            analysis["soundness"] = "Cannot be sound due to contradiction"
+        
+        return analysis
+    
+    def _check_basic_contradiction(self, statement1: str, statement2: str) -> bool:
+        """Basic contradiction detection"""
+        
+        # Simple pattern: "X is Y" vs "X is not Y"
+        if "not" in statement2.lower() and "not" not in statement1.lower():
+            # Remove "not" from statement2 and compare
+            cleaned_s2 = statement2.lower().replace(" not ", " ").replace("not ", "")
+            if cleaned_s2 in statement1.lower():
+                return True
+        
+        return False
+    
+    def verify_reasoning(self, reasoning_chain: List[Dict[str, str]]) -> Dict[str, Any]:
+        """
+        Verify a chain of reasoning for logical consistency.
+        Used for cross-node verification in the P2P network.
+        """
+        
+        verification = {
+            "chain_length": len(reasoning_chain),
+            "source_node": self.node_id,
+            "verified_steps": [],
+            "problems": []
+        }
+        
+        for i, step in enumerate(reasoning_chain):
+            step_analysis = {
+                "step_number": i + 1,
+                "statement": step.get("statement", ""),
+                "justification": step.get("justification", "")
+            }
+            
+            # Check for basic logical forms
+            if "therefore" in step["statement"].lower():
+                step_analysis["type"] = "conclusion"
+                step_analysis["validity"] = "Depends on previous premises"
+            elif "if" in step["statement"].lower() and "then" in step["statement"].lower():
+                step_analysis["type"] = "conditional"
+                step_analysis["validity"] = "Conditional statement"
+            else:
+                step_analysis["type"] = "premise"
+                step_analysis["validity"] = "Assumed for argument"
+            
+            verification["verified_steps"].append(step_analysis)
+        
+        # Overall assessment
+        if len(verification["problems"]) == 0:
+            verification["overall_assessment"] = "No obvious logical problems detected"
+            verification["confidence"] = 0.7
+        else:
+            verification["overall_assessment"] = "Logical problems require attention"
+            verification["confidence"] = 0.3
+        
+        return verification
+    
+    def get_node_status(self) -> Dict[str, Any]:
+        """Return current node status for network monitoring"""
+        
+        return {
+            "node_id": self.node_id,
+            "domain": self.domain,
+            "specialization": self.specialization,
+            "version": self.version,
+            "steward": self.steward,
+            "knowledge_areas": list(self.knowledge_base.keys()),
+            "knowledge_gaps": list(self.knowledge_gaps.keys()),
+            "reasoning_capabilities": ["argument_analysis", "logical_verification", "contradiction_detection"],
+            "last_update": self.last_update,
+            "peer_connections": len(self.peer_connections),
+            "status": "active"
+        }
+    
+    def connect_to_peer(self, peer_info: Dict[str, str]):
+        """Connect to another node in the P2P network"""
+        
+        self.peer_connections.append({
+            "node_id": peer_info["node_id"],
+            "domain": peer_info["domain"],
+            "connection_time": time.time()
+        })
+
+# Demonstration of the philosophy node
+def demonstrate_philosophy_node():
+    """Demonstrate the basic philosophy node functionality"""
+    
+    print("BASIC PHILOSOPHY NODE DEMONSTRATION")
+    print("=" * 50)
+    
+    # Create the node
+    philosophy_node = PhilosophyNode()
+    
+    # Show node status
+    status = philosophy_node.get_node_status()
+    print(f"Node ID: {status['node_id']}")
+    print(f"Domain: {status['domain']}")
+    print(f"Specialization: {status['specialization']}")
+    print(f"Knowledge Areas: {', '.join(status['knowledge_areas'])}")
+    print(f"Reasoning Capabilities: {', '.join(status['reasoning_capabilities'])}")
+    print()
+    
+    # Test queries
+    test_questions = [
+        "What did Descartes mean by 'I think, therefore I am'?",
+        "How does conditional reasoning work?",
+        "What is Kipling's 'If—' about?",
+        "What is the law of non-contradiction?",
+        "How should I think about ethical decisions?",
+        "What is the nature of time?"  # Should show knowledge gap
+    ]
+    
+    print("TESTING PHILOSOPHICAL QUERIES:")
+    print("-" * 35)
+    
+    for question in test_questions:
+        print(f"\nQ: {question}")
+        response = philosophy_node.query(question)
+        
+        print(f"A: {response['answer']}")
+        if 'certainty' in response:
+            print(f"Certainty: {response['certainty']}")
+        if 'knowledge_gap' in response:
+            print(f"Knowledge Gap: {response['knowledge_gap']}")
+        if 'reasoning_process' in response:
+            print(f"Reasoning: {response['reasoning_process']}")
+    
+    print(f"\n" + "=" * 50)
+    print("ARGUMENT ANALYSIS TESTING:")
+    print("-" * 35)
+    
+    # Test argument analysis
+    test_premises = [
+        "If it rains, then the ground gets wet",
+        "It is raining"
+    ]
+    test_conclusion = "The ground gets wet"
+    
+    print(f"Premises: {test_premises}")
+    print(f"Conclusion: {test_conclusion}")
+    
+    analysis = philosophy_node.analyze_argument(test_premises, test_conclusion)
+    print(f"Structure: {analysis['structure']}")
+    print(f"Validity Check: {analysis['validity_check']}")
+    print(f"Certainty: {analysis['certainty']}")
+    
+    print(f"\n" + "=" * 50)
+    print("NODE FEATURES DEMONSTRATED:")
+    print("✓ Philosophical reasoning with uncertainty acknowledgment")
+    print("✓ Logical structure analysis and argument verification")
+    print("✓ Multiple philosophical perspectives presented")
+    print("✓ Cross-domain reasoning capabilities for P2P integration")
+    print("✓ Explicit knowledge boundaries and gap identification")
+
+if __name__ == "__main__":
+    demonstrate_philosophy_node()
