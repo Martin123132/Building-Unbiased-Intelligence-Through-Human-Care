@@ -12,7 +12,7 @@ Commercial use requires a separate written license from the licensor. Commercial
 - offering Building-Unbiased-Intelligence-Through-Human-Care functionality through a hosted, managed, SaaS, cloud, API, or agent service;
 - using Building-Unbiased-Intelligence-Through-Human-Care in an enterprise product or commercial developer tool;
 - using Building-Unbiased-Intelligence-Through-Human-Care or derived code as part of a commercial AI coding, agent, memory, context, retrieval, or repository-analysis product;
-- training, fine-tuning, distilling, evaluating, or improving a commercial AI model or commercial AI system using Building-Unbiased-Intelligence-Through-Human-Care source code, documentation, pack format, tests, or derived materials;
+- training, fine-tuning, distilling, evaluating, or improving a commercial AI model or commercial AI system using Building-Unbiased-Intelligence-Through-Human-Care source code, documentation, tests, data formats, or derived materials;
 - removing or obscuring copyright, license, attribution, or required notices.
 
 Building-Unbiased-Intelligence-Through-Human-Care was created by Martin Ollett and is owned/licensed by TWO HANDS NETWORK LTD.

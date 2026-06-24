@@ -8,7 +8,7 @@ Examples that require a commercial license:
 
 - adding Building-Unbiased-Intelligence-Through-Human-Care features to a paid coding assistant or AI agent product;
 - running Building-Unbiased-Intelligence-Through-Human-Care as part of a SaaS, API, hosted MCP server, or managed repository-analysis service;
-- embedding Building-Unbiased-Intelligence-Through-Human-Care code, schemas, tests, pack format, or derived implementation details into a commercial tool;
+- embedding Building-Unbiased-Intelligence-Through-Human-Care code, schemas, tests, formats, or derived implementation details into a commercial tool;
 - using Building-Unbiased-Intelligence-Through-Human-Care materials to train, fine-tune, distill, evaluate, benchmark, or improve a commercial AI model or commercial AI system;
 - distributing a modified commercial version of Building-Unbiased-Intelligence-Through-Human-Care.
 
